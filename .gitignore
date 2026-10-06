@@ -1,0 +1,19 @@
+# Python
+venv/
+*.py[cod]
+__pycache__/
+*.so
+
+# Environment Variables & Keys
+.env
+private_key.pem
+
+# Django & Media
+*.sqlite3
+media/
+staticfiles/
+
+# Logs & System
+*.log
+.DS_Store
+Thumbs.db
