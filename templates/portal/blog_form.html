@@ -1,0 +1,68 @@
+{% extends 'portal/base_admin.html' %}
+
+{% block page_title %}{{ title }}{% endblock %}
+
+{% block admin_content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="bg-white p-4 p-md-5 rounded-4 border shadow-sm">
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label class="form-label fw-bold">Article Title</label>
+          {{ form.title }}
+        </div>
+        <div class="row g-3 mb-3">
+          <div class="col-md-4">
+            <label class="form-label fw-bold">Category</label>
+            {{ form.category }}
+          </div>
+          <div class="col-md-4">
+            <label class="form-label fw-bold">Author Name</label>
+            {{ form.author_name }}
+          </div>
+          <div class="col-md-4">
+            <label class="form-label fw-bold">Publish Date</label>
+            {{ form.published_date }}
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-bold">Author Role / Designation</label>
+          {{ form.author_role }}
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-bold">Excerpt / Short Teaser</label>
+          {{ form.excerpt }}
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-bold">Full Article Content</label>
+          {{ form.content }}
+        </div>
+        <div class="mb-4">
+          <label class="form-label fw-bold">Cover Image</label>
+          {{ form.featured_image }}
+        </div>
+        <div class="row g-3 mb-4">
+          <div class="col-md-6">
+            <div class="form-check form-switch">
+              {{ form.is_published }}
+              <label class="form-check-label fw-semibold">Publish Article</label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-check form-switch">
+              {{ form.is_featured }}
+              <label class="form-check-label fw-semibold">Featured on Homepage</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-between pt-3 border-top">
+          <a href="{% url 'portal:manage_blogs' %}" class="btn btn-outline-secondary">Cancel</a>
+          <button type="submit" class="btn btn-primary px-4 fw-bold">Save Article</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

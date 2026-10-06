@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About Us | Holi Family Secondary School{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<div class="py-5" style="background: linear-gradient(135deg, #07162c, #0f2b59); color: #fff;">
+  <div class="container text-center py-4">
+    <span class="badge bg-warning text-dark text-uppercase px-3 py-2 fw-bold mb-2">About Our Institution</span>
+    <h1 class="display-4 fw-bold text-white mb-2">Our Heritage, Mission & Purpose</h1>
+    <p class="lead text-white-50 mx-auto" style="max-width: 600px;">Committed to cultivating character, curiosity, and academic supremacy since 1995.</p>
+  </div>
+</div>
+
+<!-- Mission, Vision, Values -->
+<section class="section-padding bg-white">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-lg-4">
+        <div class="hf-card p-4 h-100">
+          <div class="hf-card-icon bg-primary text-white">
+            <i class="fa-solid fa-eye"></i>
+          </div>
+          <h4 class="fw-bold mb-3">Our Vision</h4>
+          <p class="text-muted leading-relaxed">{{ profile.vision }}</p>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="hf-card p-4 h-100">
+          <div class="hf-card-icon bg-success text-white">
+            <i class="fa-solid fa-bullseye"></i>
+          </div>
+          <h4 class="fw-bold mb-3">Our Mission</h4>
+          <p class="text-muted leading-relaxed">{{ profile.mission }}</p>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="hf-card p-4 h-100">
+          <div class="hf-card-icon bg-warning text-dark">
+            <i class="fa-solid fa-gem"></i>
+          </div>
+          <h4 class="fw-bold mb-3">Core Values</h4>
+          <p class="text-muted leading-relaxed">{{ profile.core_values }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- History & Journey -->
+<section class="section-padding bg-light">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6">
+        <span class="section-subtitle">Our Journey</span>
+        <h2 class="section-title">Decades of Educational Distinction</h2>
+        <p class="text-muted leading-relaxed mb-4">{{ profile.history }}</p>
+        <p class="text-muted leading-relaxed">
+          Through deliberate curriculum enhancements, international pedagogical partnerships, and continuous investments in modern science laboratories and digital infrastructure, Holi Family Secondary School continues to set benchmarks in holistic school education.
+        </p>
+      </div>
+      <div class="col-lg-6">
+        <div class="bg-white p-4 rounded-4 shadow-sm border">
+          <h5 class="fw-bold text-primary mb-3"><i class="fa-solid fa-trophy text-warning me-2"></i> Notable Milestones & Accolades</h5>
+          <ul class="list-unstyled mb-0">
+            {% for ach in achievements %}
+            <li class="d-flex align-items-start gap-3 mb-3 pb-3 border-bottom">
+              <span class="badge bg-primary fs-6">{{ ach.year }}</span>
+              <div>
+                <h6 class="mb-1 fw-bold">{{ ach.title }}</h6>
+                <small class="text-muted">{{ ach.description }}</small>
+              </div>
+            </li>
+            {% empty %}
+            <li class="text-muted small">Milestones catalog is being updated.</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Facilities Section -->
+<section class="section-padding bg-white">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-subtitle">Infrastructure</span>
+      <h2 class="section-title">World-Class Campus Facilities</h2>
+      <p class="section-lead">A supportive ecosystem engineered for intellectual and physical development.</p>
+    </div>
+
+    <div class="row g-4">
+      {% for facility in facilities %}
+      <div class="col-lg-4 col-md-6">
+        <div class="hf-card p-4">
+          <div class="hf-card-icon">
+            <i class="{{ facility.icon_class|default:'fa-solid fa-school' }} text-primary"></i>
+          </div>
+          <h5 class="fw-bold mb-2">{{ facility.title }}</h5>
+          <p class="text-muted small mb-0">{{ facility.short_description }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

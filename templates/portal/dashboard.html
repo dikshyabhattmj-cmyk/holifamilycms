@@ -1,0 +1,131 @@
+{% extends 'portal/base_admin.html' %}
+
+{% block page_title %}Administrative Dashboard{% endblock %}
+
+{% block admin_content %}
+<!-- Analytics Summary Grid -->
+<div class="row g-4 mb-5">
+  <div class="col-xl-3 col-sm-6">
+    <div class="stat-card-admin">
+      <div>
+        <span class="text-muted small fw-semibold">Total Admissions</span>
+        <h3 class="fw-bold text-dark mt-1 mb-0">{{ total_applications }}</h3>
+        <small class="text-danger fw-semibold">{{ pending_applications }} Pending Review</small>
+      </div>
+      <div class="stat-icon-wrap bg-primary-subtle text-primary">
+        <i class="fa-solid fa-user-graduate"></i>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-sm-6">
+    <div class="stat-card-admin">
+      <div>
+        <span class="text-muted small fw-semibold">Published Notices</span>
+        <h3 class="fw-bold text-dark mt-1 mb-0">{{ total_notices }}</h3>
+        <small class="text-success fw-semibold">Auto-broadcasted on publish</small>
+      </div>
+      <div class="stat-icon-wrap bg-warning-subtle text-warning">
+        <i class="fa-solid fa-bullhorn"></i>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-sm-6">
+    <div class="stat-card-admin">
+      <div>
+        <span class="text-muted small fw-semibold">Unread Inquiries</span>
+        <h3 class="fw-bold text-dark mt-1 mb-0">{{ total_messages }}</h3>
+        <small class="text-muted">Direct Messages</small>
+      </div>
+      <div class="stat-icon-wrap bg-danger-subtle text-danger">
+        <i class="fa-solid fa-envelope"></i>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-sm-6">
+    <div class="stat-card-admin">
+      <div>
+        <span class="text-muted small fw-semibold">Push Subscribers</span>
+        <h3 class="fw-bold text-dark mt-1 mb-0">{{ active_subscriptions }}</h3>
+        <a href="{% url 'portal:push_manager' %}" class="small text-primary fw-semibold text-decoration-none">
+          <i class="fa-solid fa-tower-broadcast me-1"></i> Send Live Alert
+        </a>
+      </div>
+      <div class="stat-icon-wrap bg-success-subtle text-success">
+        <i class="fa-solid fa-mobile-screen-button"></i>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4">
+  <!-- Recent Applications Table -->
+  <div class="col-lg-8">
+    <div class="bg-white p-4 rounded-4 border shadow-sm h-100">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h5 class="fw-bold text-dark mb-0">Recent Admission Submissions</h5>
+        <a href="{% url 'portal:manage_admissions' %}" class="btn btn-sm btn-outline-primary">View All</a>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0 small">
+          <thead class="table-light">
+            <tr>
+              <th>Ref No.</th>
+              <th>Student Name</th>
+              <th>Grade</th>
+              <th>Status</th>
+              <th>Date</th>
+              <th class="text-end">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for app in recent_applications %}
+            <tr>
+              <td class="fw-bold text-primary">{{ app.application_reference_no }}</td>
+              <td>{{ app.first_name }} {{ app.last_name }}</td>
+              <td><span class="badge bg-light text-secondary border">{{ app.applied_grade }}</span></td>
+              <td>
+                {% if app.status == 'pending' %}<span class="badge bg-warning text-dark">Pending</span>
+                {% elif app.status == 'accepted' %}<span class="badge bg-success">Accepted</span>
+                {% else %}<span class="badge bg-info text-dark">{{ app.get_status_display }}</span>{% endif %}
+              </td>
+              <td class="text-muted">{{ app.created_at|date:"M d" }}</td>
+              <td class="text-end">
+                <a href="{% url 'portal:view_admission' app.pk %}" class="btn btn-sm btn-light border"><i class="fa-solid fa-eye"></i></a>
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="6" class="text-center py-3 text-muted">No applications received yet.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Audit & Quick Tools -->
+  <div class="col-lg-4">
+    <div class="bg-white p-4 rounded-4 border shadow-sm h-100">
+      <h5 class="fw-bold text-dark mb-4">System Activity & Audit Log</h5>
+      <ul class="list-unstyled mb-0 small">
+        {% for log in audit_logs %}
+        <li class="mb-3 pb-2 border-bottom">
+          <div class="fw-semibold text-dark">{{ log.action }}</div>
+          <div class="text-muted d-flex justify-content-between mt-1">
+            <span>By: {{ log.user.username|default:"System" }}</span>
+            <span>{{ log.timestamp|date:"M d, H:i" }}</span>
+          </div>
+        </li>
+        {% empty %}
+        <li class="text-muted">No recent system activity recorded.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}

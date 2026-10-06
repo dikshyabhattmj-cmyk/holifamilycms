@@ -1,0 +1,156 @@
+{% extends 'portal/base_admin.html' %}
+{% load static %}
+
+{% block title %}Push Notifications & Subscriptions | Holi Family Admin{% endblock %}
+{% block page_title %}Push Notifications & Real-Time Broadcasts{% endblock %}
+
+{% block admin_content %}
+<div class="row g-4 mb-4">
+  <!-- Status & Stats Banner -->
+  <div class="col-md-4">
+    <div class="admin-card p-4 h-100 border bg-white rounded-4 shadow-sm">
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <h6 class="text-muted fw-semibold mb-0">Active Device Subscriptions</h6>
+        <div class="p-2 rounded-3 bg-primary-subtle text-primary">
+          <i class="fa-solid fa-mobile-screen fs-4"></i>
+        </div>
+      </div>
+      <h2 class="display-6 fw-bold text-dark mb-1">{{ total_subscribers }}</h2>
+      <small class="text-success fw-medium"><i class="fa-solid fa-signal me-1"></i> Receiving background updates</small>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="admin-card p-4 h-100 border bg-white rounded-4 shadow-sm">
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <h6 class="text-muted fw-semibold mb-0">Delivery Engine</h6>
+        <div class="p-2 rounded-3 bg-success-subtle text-success">
+          <i class="fa-solid fa-shield-check fs-4"></i>
+        </div>
+      </div>
+      <h5 class="fw-bold text-success mb-1">Web Push + VAPID</h5>
+      <small class="text-muted">Direct browser push (works when closed/locked)</small>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="admin-card p-4 h-100 border bg-white rounded-4 shadow-sm">
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <h6 class="text-muted fw-semibold mb-0">This Device / Browser</h6>
+        <div class="p-2 rounded-3 bg-warning-subtle text-warning">
+          <i class="fa-solid fa-bell fs-4"></i>
+        </div>
+      </div>
+      <div class="mb-2">
+        <span data-push-status class="badge bg-secondary-subtle text-secondary">Checking...</span>
+      </div>
+      <div class="d-flex flex-wrap gap-2">
+        <button type="button" data-push-toggle class="btn btn-sm btn-outline-primary rounded-pill px-3 py-1">
+          Toggle Alerts
+        </button>
+        <button type="button" onclick="if(window.hfPWA) window.hfPWA.playNotificationSound();" class="btn btn-sm btn-outline-secondary rounded-pill px-3 py-1" title="Test Notification Chime">
+          <i class="fa-solid fa-volume-high text-warning me-1"></i> Test Sound
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4">
+  <!-- Left: Send Custom Push Broadcast Form -->
+  <div class="col-lg-5">
+    <div class="admin-card p-4 bg-white border rounded-4 shadow-sm h-100">
+      <h5 class="fw-bold text-dark mb-3 d-flex align-items-center gap-2">
+        <i class="fa-solid fa-paper-plane text-primary"></i> Send Real-Time Broadcast
+      </h5>
+      <p class="text-muted small mb-4">
+        Broadcast an instant push message to all subscribed Android phones, iPhones (PWA), tablets, and desktops.
+      </p>
+
+      <form method="POST" action="{% url 'portal:push_manager' %}">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label class="form-label fw-semibold small">Notification Title *</label>
+          <input type="text" name="title" class="form-control" placeholder="e.g. 📢 Emergency Weather Closure" required maxlength="100">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold small">Message Body *</label>
+          <textarea name="body" rows="4" class="form-control" placeholder="e.g. School will remain closed tomorrow due to heavy rain. Online classes start at 9 AM." required maxlength="300"></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold small">Destination URL (On Click)</label>
+          <input type="text" name="url" class="form-control" value="/notices/" placeholder="/notices/ or https://...">
+          <small class="text-muted" style="font-size: 0.75rem;">Where the user lands when they tap the notification.</small>
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label fw-semibold small">Notification Tag</label>
+          <input type="text" name="tag" class="form-control" value="hf-announcement" placeholder="hf-announcement">
+          <small class="text-muted" style="font-size: 0.75rem;">Notifications with the same tag replace previous ones (prevents clutter).</small>
+        </div>
+
+        <button type="submit" class="btn btn-hf-primary w-100 py-2 fw-semibold rounded-3 shadow-sm d-flex align-items-center justify-content-center gap-2">
+          <i class="fa-solid fa-tower-broadcast"></i>
+          <span>Send Live Notification Now</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Right: Recent Notification Logs -->
+  <div class="col-lg-7">
+    <div class="admin-card p-4 bg-white border rounded-4 shadow-sm h-100">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="fw-bold text-dark mb-0 d-flex align-items-center gap-2">
+          <i class="fa-solid fa-clock-rotate-left text-primary"></i> Notification Dispatch Logs
+        </h5>
+        <span class="badge bg-light text-muted border">{{ logs.count }} recorded</span>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0 small">
+          <thead class="table-light">
+            <tr>
+              <th>Event / Title</th>
+              <th>Message</th>
+              <th>Delivered</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for log in logs %}
+            <tr>
+              <td>
+                <span class="badge bg-primary-subtle text-primary text-uppercase" style="font-size: 0.65rem;">{{ log.event_type }}</span>
+                <div class="fw-bold text-dark mt-1">{{ log.title }}</div>
+              </td>
+              <td>
+                <div class="text-truncate text-muted" style="max-width: 220px;" title="{{ log.body }}">{{ log.body }}</div>
+              </td>
+              <td>
+                <span class="badge bg-success-subtle text-success">{{ log.success_count }} devices</span>
+                {% if log.failure_count > 0 %}
+                <span class="badge bg-danger-subtle text-danger">{{ log.failure_count }} failed</span>
+                {% endif %}
+              </td>
+              <td class="text-muted" style="white-space: nowrap;">
+                {{ log.created_at|date:"M d, H:i" }}
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="4" class="text-center py-4 text-muted">
+                <i class="fa-solid fa-bell-slash fs-4 d-block mb-2 text-secondary opacity-50"></i>
+                No notifications logged yet. Trigger an update or send a broadcast above!
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

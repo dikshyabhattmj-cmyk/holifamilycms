@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Apply for {{ vacancy.title }} | Careers | Holi Family Secondary School{% endblock %}
+
+{% block content %}
+<div class="py-5" style="background: linear-gradient(135deg, #07162c, #0f2b59); color: #fff;">
+  <div class="container text-center py-4">
+    <span class="badge bg-warning text-dark text-uppercase px-3 py-2 fw-bold mb-2">Job Application</span>
+    <h1 class="h2 fw-bold text-white mb-2">{{ vacancy.title }}</h1>
+    <p class="text-white-50 small mb-0">{{ vacancy.department }} &bull; Deadline: {{ vacancy.deadline|date:"F d, Y" }}</p>
+  </div>
+</div>
+
+<section class="section-padding bg-light">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="bg-white p-4 p-md-5 rounded-4 shadow-sm border">
+          <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Full Name <span class="text-danger">*</span></label>
+                {{ form.full_name }}
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Email Address <span class="text-danger">*</span></label>
+                {{ form.email }}
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Phone Number <span class="text-danger">*</span></label>
+                {{ form.phone }}
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Highest Qualification <span class="text-danger">*</span></label>
+                {{ form.qualification }}
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Total Teaching/Relevant Experience <span class="text-danger">*</span></label>
+                {{ form.years_of_experience }}
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Resume / CV (PDF) <span class="text-danger">*</span></label>
+                {{ form.resume }}
+              </div>
+              <div class="col-12">
+                <label class="form-label fw-semibold small">Cover Letter / Teaching Philosophy</label>
+                {{ form.cover_letter }}
+              </div>
+              <div class="col-12 pt-3 text-center">
+                <button type="submit" class="btn btn-hf-gold btn-lg px-5">Submit Job Application</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

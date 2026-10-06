@@ -1,0 +1,636 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Holi Family Secondary School | Official Home{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="container position-relative z-1">
+    <div class="row align-items-center g-5">
+      <!-- Hero Left: Text & Typewriter (order-2 on mobile, order-1 on lg+) -->
+      <div class="col-lg-6 text-start order-2 order-lg-1">
+        <div class="hero-badge animate-fade-in">
+          <i class="fa-solid fa-award text-warning"></i> Affiliated with {{ profile.affiliation|default:"National Examination Board (NEB) & Ministry of Education, Nepal" }}
+        </div>
+        <h1 class="hero-title animate-slide-up">
+          <span id="heroTypewriter" data-phrases='["Inspiring Excellence, Nurturing Character", "Nurturing Thinkers & Innovators", "Excellence in Science, Tech & Leadership"]'>{{ profile.hero_title|default:"Inspiring Excellence, Nurturing Character" }}</span><span class="typewriter-cursor">|</span>
+        </h1>
+        <p class="hero-lead">
+          {{ profile.hero_subtitle|default:"A world-class co-educational sanctuary shaping thinkers, innovators, and leaders for tomorrow through holistic, value-based learning." }}
+        </p>
+        
+        <!-- Trust Indicator Bar -->
+        <div class="d-flex align-items-center gap-4 pt-3 mt-2 text-white-50 small flex-wrap">
+          <div class="d-flex align-items-center gap-2">
+            <i class="fa-solid fa-circle-check text-warning"></i>
+            <span>Govt. Accredited</span>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <i class="fa-solid fa-circle-check text-warning"></i>
+            <span>Holistic STEM</span>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <i class="fa-solid fa-circle-check text-warning"></i>
+            <span>30+ Years Legacy</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero Right: High Quality Visual Showcase (order-1 on mobile, order-2 on lg+) -->
+      <div class="col-lg-6 order-1 order-lg-2">
+        <div class="hero-image-wrapper">
+          <div class="hero-image-backdrop"></div>
+          <div class="hero-image-card">
+            {% if profile.hero_banner_image %}
+              <img src="{{ profile.hero_banner_image.url }}" alt="{{ profile.name|default:'Holy Family Secondary School' }}" class="img-fluid hero-main-img">
+            {% else %}
+              <img src="{% static 'images/hero-students.jpg' %}" alt="Students of Holy Family Secondary School" class="img-fluid hero-main-img">
+            {% endif %}
+            <div class="hero-floating-badge badge-top-left">
+              <div class="badge-icon"><i class="fa-solid fa-trophy"></i></div>
+              <div>
+                <span class="badge-title">Top Ranked</span>
+                <span class="badge-subtitle">Academic Excellence</span>
+              </div>
+            </div>
+            <div class="hero-floating-badge badge-bottom-right">
+              <div class="badge-icon gold"><i class="fa-solid fa-user-graduate"></i></div>
+              <div>
+                <span class="badge-title">Admissions Open</span>
+                <span class="badge-subtitle">Session 2026 - 2027</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Achievements / Heritage Banner (Sliding Marquee & Interactive Cards Below Hero) -->
+<section class="achievements-bar-section pb-4 pt-0">
+  <div class="container">
+    <div class="achievements-wrapper shadow-lg">
+      <div class="row g-0 align-items-center">
+        <!-- Static Highlight Info Column -->
+        <div class="col-lg-3 col-md-4 achievement-header-col p-4 text-center text-md-start">
+          <span class="badge bg-warning text-dark fw-bold text-uppercase px-2 py-1 mb-2">
+            <i class="fa-solid fa-sparkles me-1"></i> Milestones
+          </span>
+          <h4 class="text-white fw-bold mb-1">Heritage of Excellence</h4>
+          <p class="text-white-50 small mb-3">Nurturing holistic leaders since {{ profile.established_year|default:"1995" }}</p>
+          <a href="{% url 'admission_status' %}" class="btn btn-sm btn-outline-warning d-inline-flex align-items-center gap-1">
+            <i class="fa-solid fa-magnifying-glass"></i> Track Status
+          </a>
+        </div>
+
+        <!-- Dynamic Smooth Auto-Sliding Marquee Track -->
+        <div class="col-lg-9 col-md-8 achievement-slider-container">
+          <div class="achievement-track">
+            <!-- Set 1 -->
+            <div class="achievement-slide-item">
+              <div class="achievement-card">
+                <div class="achievement-icon"><i class="fa-solid fa-users"></i></div>
+                <div class="achievement-number">{{ profile.stat_students_count|default:"2,500+" }}</div>
+                <div class="achievement-label">Active Students</div>
+              </div>
+            </div>
+            <div class="achievement-slide-item">
+              <div class="achievement-card">
+                <div class="achievement-icon"><i class="fa-solid fa-chart-line"></i></div>
+                <div class="achievement-number">{{ profile.stat_pass_rate|default:"100%" }}</div>
+                <div class="achievement-label">Graduation Pass Rate</div>
+              </div>
+            </div>
+            <div class="achievement-slide-item">
+              <div class="achievement-card">
+                <div class="achievement-icon"><i class="fa-solid fa-chalkboard-user"></i></div>
+                <div class="achievement-number">{{ profile.stat_teachers_count|default:"120+" }}</div>
+                <div class="achievement-label">Qualified Mentors</div>
+              </div>
+            </div>
+            <div class="achievement-slide-item">
+              <div class="achievement-card">
+                <div class="achievement-icon"><i class="fa-solid fa-medal"></i></div>
+                <div class="achievement-number">{{ profile.stat_awards_count|default:"48+" }}</div>
+                <div class="achievement-label">National Accolades</div>
+              </div>
+            </div>
+            <div class="achievement-slide-item">
+              <div class="achievement-card">
+                <div class="achievement-icon"><i class="fa-solid fa-flask"></i></div>
+                <div class="achievement-number">6+</div>
+                <div class="achievement-label">Modern Science Labs</div>
+              </div>
+            </div>
+            <div class="achievement-slide-item">
+              <div class="achievement-card">
+                <div class="achievement-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+                <div class="achievement-number">30+</div>
+                <div class="achievement-label">Years of Legacy</div>
+              </div>
+            </div>
+
+            <!-- Set 2 Duplicate for seamless infinite loop -->
+            <div class="achievement-slide-item" aria-hidden="true">
+              <div class="achievement-card">
+                <div class="achievement-icon"><i class="fa-solid fa-users"></i></div>
+                <div class="achievement-number">{{ profile.stat_students_count|default:"2,500+" }}</div>
+                <div class="achievement-label">Active Students</div>
+              </div>
+            </div>
+            <div class="achievement-slide-item" aria-hidden="true">
+              <div class="achievement-card">
+                <div class="achievement-icon"><i class="fa-solid fa-chart-line"></i></div>
+                <div class="achievement-number">{{ profile.stat_pass_rate|default:"100%" }}</div>
+                <div class="achievement-label">Graduation Pass Rate</div>
+              </div>
+            </div>
+            <div class="achievement-slide-item" aria-hidden="true">
+              <div class="achievement-card">
+                <div class="achievement-icon"><i class="fa-solid fa-chalkboard-user"></i></div>
+                <div class="achievement-number">{{ profile.stat_teachers_count|default:"120+" }}</div>
+                <div class="achievement-label">Qualified Mentors</div>
+              </div>
+            </div>
+            <div class="achievement-slide-item" aria-hidden="true">
+              <div class="achievement-card">
+                <div class="achievement-icon"><i class="fa-solid fa-medal"></i></div>
+                <div class="achievement-number">{{ profile.stat_awards_count|default:"48+" }}</div>
+                <div class="achievement-label">National Accolades</div>
+              </div>
+            </div>
+            <div class="achievement-slide-item" aria-hidden="true">
+              <div class="achievement-card">
+                <div class="achievement-icon"><i class="fa-solid fa-flask"></i></div>
+                <div class="achievement-number">6+</div>
+                <div class="achievement-label">Modern Science Labs</div>
+              </div>
+            </div>
+            <div class="achievement-slide-item" aria-hidden="true">
+              <div class="achievement-card">
+                <div class="achievement-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+                <div class="achievement-number">30+</div>
+                <div class="achievement-label">Years of Legacy</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Action Call to Action Section (Placed below Hero Image & Achievements) -->
+<section class="py-4" style="background: rgba(7, 22, 44, 0.95);">
+  <div class="container">
+    <div class="d-flex flex-column flex-sm-row justify-content-center align-items-center gap-3">
+      <a href="{% url 'admissions' %}#applyForm" class="btn btn-hf-gold btn-lg px-4 py-3 shadow-md fw-bold d-inline-flex align-items-center justify-content-center w-100 w-sm-auto">
+        <i class="fa-solid fa-graduation-cap me-2"></i> Apply for Admission
+      </a>
+      <a href="{% url 'about' %}" class="btn btn-outline-light btn-lg px-4 py-3 shadow-xs fw-semibold d-inline-flex align-items-center justify-content-center w-100 w-sm-auto">
+        <i class="fa-solid fa-compass me-2"></i> Explore Campus
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Live Announcements Strip (Placed cleanly below Hero, Achievements & Actions) -->
+{% if school_info.urgent_announcement_enabled %}
+<section class="py-3" style="background: linear-gradient(90deg, #07162c, #0f2b59); border-bottom: 2px solid var(--hf-gold-accent);">
+  <div class="container">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center text-center text-md-start gap-2">
+      <div class="d-flex flex-column flex-sm-row align-items-center justify-content-center gap-2">
+        <span class="badge bg-danger text-uppercase px-3 py-2 rounded-pill shadow-xs d-inline-flex align-items-center gap-1">
+          <i class="fa-solid fa-bullhorn"></i> <span>Live Update</span>
+        </span>
+        <span class="text-white small fw-medium">{{ school_info.urgent_announcement_text }}</span>
+      </div>
+      {% if school_info.urgent_announcement_link %}
+      <a href="{{ school_info.urgent_announcement_link }}" class="btn btn-sm btn-outline-warning rounded-pill px-3 fw-semibold">
+        <span>View Details</span> <i class="fa-solid fa-arrow-right fa-xs ms-1"></i>
+      </a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- Latest Notices & Announcements Section -->
+<section class="py-5 bg-white border-bottom">
+  <div class="container">
+    <div class="row align-items-center mb-4">
+      <div class="col-md-8">
+        <span class="badge bg-primary-subtle text-primary fw-bold text-uppercase px-3 py-2 mb-1">
+          <i class="fa-solid fa-bullhorn me-1"></i> Official Board
+        </span>
+        <h2 class="h3 fw-bold text-dark mb-0">Latest Notices & Circulars</h2>
+      </div>
+      <div class="col-md-4 text-md-end mt-3 mt-md-0">
+        <a href="{% url 'notices' %}" class="btn btn-hf-outline btn-sm rounded-pill px-3">
+          <span>View All Circulars</span> <i class="fa-solid fa-arrow-right ms-1"></i>
+        </a>
+      </div>
+    </div>
+
+    <div class="row g-3">
+      {% for notice in latest_notices %}
+      <div class="col-lg-6">
+        <a href="{% url 'notice_detail' notice.slug %}" class="text-decoration-none">
+          <div class="notice-pill {% if notice.is_urgent %}urgent{% endif %}">
+            <div class="d-flex align-items-start gap-3">
+              <div class="text-center p-2 rounded-3 bg-light border" style="min-width: 64px;">
+                <div class="small text-uppercase fw-bold text-muted" style="font-size: 0.72rem;">{{ notice.publish_date|date:"M" }}</div>
+                <div class="h4 mb-0 fw-bold text-dark">{{ notice.publish_date|date:"d" }}</div>
+              </div>
+              <div class="flex-grow-1">
+                <div class="d-flex flex-wrap align-items-center gap-1 mb-1">
+                  {% if notice.is_pinned %}<span class="badge bg-warning text-dark me-1"><i class="fa-solid fa-thumbtack"></i> Pinned</span>{% endif %}
+                  {% if notice.is_urgent %}<span class="badge bg-danger text-white me-1">Urgent</span>{% endif %}
+                  <span class="badge bg-light text-secondary border">{{ notice.get_category_display }}</span>
+                </div>
+                <h6 class="mt-1 mb-1 text-dark fw-bold">{{ notice.title }}</h6>
+                <p class="small text-muted mb-0">{{ notice.summary|default:notice.content|truncatewords:15 }}</p>
+              </div>
+            </div>
+            <div>
+              <i class="fa-solid fa-chevron-right text-muted"></i>
+            </div>
+          </div>
+        </a>
+      </div>
+      {% empty %}
+      <div class="col-12 text-center py-4 text-muted">
+        <p>No active notices published at the moment.</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- About & Principal Desk Spotlight -->
+<section class="section-padding position-relative overflow-hidden" style="background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);">
+  <div class="container position-relative">
+    <div class="row align-items-center g-5">
+      <!-- Left Column: Story & Features -->
+      <div class="col-lg-6">
+        <div class="d-inline-flex align-items-center gap-2 px-3 py-1 mb-3 rounded-pill bg-primary bg-opacity-10 border border-primary border-opacity-20 text-primary fw-semibold small">
+          <i class="fa-solid fa-graduation-cap"></i>
+          <span>Welcome to {{ profile.name|default:"Holy Family English Medium School" }}</span>
+        </div>
+        
+        <h2 class="display-6 fw-bold mb-3" style="color: var(--hf-navy-dark); line-height: 1.25;">
+          A Heritage of <span style="background: linear-gradient(120deg, #1a56db, #0f2b59); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Academic Integrity</span> & Future Readiness
+        </h2>
+        
+        <p class="text-muted leading-relaxed mb-4 fs-6">
+          {{ profile.short_intro|default:"Holy Family English Medium School is committed to delivering holistic, student-centered education. We combine challenging academic curricula with vibrant co-curricular activities to empower students to achieve their utmost potential." }}
+        </p>
+
+        <!-- Feature Cards -->
+        <div class="row g-3 mb-4">
+          <div class="col-sm-6">
+            <div class="p-3 bg-white rounded-4 border shadow-sm h-100 d-flex align-items-center gap-3 transition-hover">
+              <div class="d-flex align-items-center justify-content-center rounded-3 text-primary flex-shrink-0" style="width: 48px; height: 48px; background: rgba(26, 86, 219, 0.1);">
+                <i class="fa-solid fa-microscope fs-4"></i>
+              </div>
+              <div>
+                <h6 class="mb-0 fw-bold text-dark">Advanced Labs</h6>
+                <small class="text-muted">Physics, Chem, Bio & STEM</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="p-3 bg-white rounded-4 border shadow-sm h-100 d-flex align-items-center gap-3 transition-hover">
+              <div class="d-flex align-items-center justify-content-center rounded-3 text-success flex-shrink-0" style="width: 48px; height: 48px; background: rgba(22, 163, 74, 0.1);">
+                <i class="fa-solid fa-shield-heart fs-4"></i>
+              </div>
+              <div>
+                <h6 class="mb-0 fw-bold text-dark">Holistic Care</h6>
+                <small class="text-muted">Individual Mentorship & Guidance</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex flex-wrap gap-3">
+          <a href="{% url 'about' %}" class="btn btn-hf-primary px-4 py-2 rounded-pill shadow-sm d-inline-flex align-items-center gap-2">
+            <span>Discover Our Journey</span>
+            <i class="fa-solid fa-arrow-right-long"></i>
+          </a>
+          <a href="{% url 'admissions' %}" class="btn btn-outline-secondary px-4 py-2 rounded-pill bg-white d-inline-flex align-items-center gap-2">
+            <i class="fa-solid fa-paper-plane text-primary"></i>
+            <span>Apply Now</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Right Column: Premium Principal Card -->
+      <div class="col-lg-6">
+        <div class="principal-spotlight-card position-relative p-4 p-md-5 rounded-4 bg-white border">
+          <!-- Top Accent Ribbon / Badge -->
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-warning bg-opacity-10 text-warning-emphasis fw-bold small border border-warning border-opacity-25">
+              <i class="fa-solid fa-quote-left"></i>
+              <span>Leadership Perspective</span>
+            </div>
+            <div class="text-primary opacity-25">
+              <i class="fa-solid fa-award fs-3"></i>
+            </div>
+          </div>
+
+          <!-- Principal Info Header -->
+          <div class="d-flex align-items-center gap-3 mb-4 pb-3 border-bottom border-light-subtle">
+            <div class="position-relative">
+              {% if profile.principal_photo %}
+                <img src="{{ profile.principal_photo.url }}" alt="{{ profile.principal_name }}" class="rounded-circle shadow object-fit-cover" style="width: 70px; height: 70px;">
+              {% else %}
+                <div class="rounded-circle d-flex align-items-center justify-content-center text-white shadow" style="width: 70px; height: 70px; background: linear-gradient(135deg, #0f2b59 0%, #1a56db 100%); font-size: 1.9rem;">
+                  <i class="fa-solid fa-user-tie"></i>
+                </div>
+              {% endif %}
+              <span class="position-absolute bottom-0 end-0 bg-success border border-white border-2 rounded-circle p-1" title="Verified Director"></span>
+            </div>
+            <div>
+              <h5 class="mb-1 fw-bold text-dark">{{ profile.principal_name|default:"Dr. Sarah Jenkins, Ph.D." }}</h5>
+              <div class="d-flex align-items-center gap-2">
+                <span class="badge bg-primary-subtle text-primary fw-medium px-2 py-1 rounded">{{ profile.principal_designation|default:"Principal & Academic Director" }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Message Body -->
+          <div class="position-relative mb-4">
+            <div class="principal-quote-mark"><i class="fa-solid fa-quote-right"></i></div>
+            <h6 class="fw-bold text-primary mb-2 d-flex align-items-center gap-2">
+              <span>Message from the Desk</span>
+            </h6>
+            <p class="text-secondary small fst-italic leading-relaxed mb-0 position-relative" style="z-index: 2; line-height: 1.75;">
+              "{{ profile.principal_message|default:"Welcome to Holy Family English Medium School. For nearly three decades, our institution has stood as a beacon of academic rigor, character formation, and inclusive leadership. We believe every child arrives with unique potential waiting to be ignited. Our dedicated faculty and value-based pedagogy prepare students to excel globally while remaining humble and grounded."|truncatewords:55 }}"
+            </p>
+          </div>
+
+          <!-- Bottom Action Row -->
+          <div class="d-flex align-items-center justify-content-between pt-2">
+            <a href="{% url 'principal_message' %}" class="btn btn-hf-outline btn-sm px-3 py-2 rounded-pill fw-semibold d-inline-flex align-items-center gap-2 shadow-xs">
+              <span>Read Full Message</span>
+              <i class="fa-solid fa-arrow-right-long text-primary"></i>
+            </a>
+            <div class="d-flex align-items-center gap-2 text-muted small">
+              <i class="fa-solid fa-stamp text-primary"></i>
+              <span class="fw-semibold">Holy Family Desk</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Academic Programs Section -->
+<section class="section-padding bg-white">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-subtitle">Academic Pathways</span>
+      <h2 class="section-title">Comprehensive Learning Levels</h2>
+      <p class="section-lead">Structured to ignite curiosity from foundational primary steps through to higher secondary mastery.</p>
+    </div>
+
+    <div class="row g-4">
+      {% for program in programs %}
+      <div class="col-lg-3 col-md-6">
+        <div class="hf-card p-4 d-flex flex-column rounded-4">
+          <div class="hf-card-icon mb-3">
+            <div class="rounded-3 d-flex align-items-center justify-content-center text-primary" style="width: 48px; height: 48px; background: rgba(26, 86, 219, 0.1); font-size: 1.3rem;">
+              <i class="fa-solid fa-book-bookmark"></i>
+            </div>
+          </div>
+          <h5 class="fw-bold mb-2 text-dark">{{ program.name }}</h5>
+          <p class="text-muted small flex-grow-1 mb-4 leading-relaxed">{{ program.description|truncatewords:18 }}</p>
+          <a href="{% url 'program_detail' program.slug %}" class="fw-bold text-primary small d-inline-flex align-items-center gap-1 hover-gold">
+            <span>Program Curriculum</span> <i class="fa-solid fa-arrow-right fa-xs"></i>
+          </a>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-12 text-center py-4">
+        <p class="text-muted">Academic programs list updating shortly.</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Upcoming School Events & Activities -->
+<section class="section-padding bg-light">
+  <div class="container">
+    <div class="row align-items-center mb-5">
+      <div class="col-md-8">
+        <span class="section-subtitle">Campus Life</span>
+        <h2 class="section-title mb-0">Upcoming Events & Highlights</h2>
+      </div>
+      <div class="col-md-4 text-md-end mt-3 mt-md-0">
+        <a href="{% url 'events' %}" class="btn btn-hf-outline btn-sm rounded-pill px-3">
+          <span>All Events & Calendar</span> <i class="fa-solid fa-arrow-right ms-1"></i>
+        </a>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      {% for event in upcoming_events %}
+      <div class="col-lg-4 col-md-6">
+        <div class="hf-card rounded-4 overflow-hidden d-flex flex-column h-100">
+          <div class="p-4 d-flex flex-column flex-grow-1">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <span class="badge bg-primary text-white px-2 py-1"><i class="fa-solid fa-calendar-day me-1"></i> {{ event.event_date|date:"M d, Y" }}</span>
+              <small class="text-muted"><i class="fa-solid fa-clock me-1"></i> {{ event.start_time }}</small>
+            </div>
+            <h5 class="fw-bold text-dark mb-2">{{ event.title }}</h5>
+            <p class="text-muted small mb-2"><i class="fa-solid fa-location-dot text-danger me-1"></i> {{ event.location }}</p>
+            <p class="text-muted small mb-4 flex-grow-1 leading-relaxed">{{ event.short_summary|truncatewords:16 }}</p>
+            <a href="{% url 'event_detail' event.slug %}" class="btn btn-sm btn-hf-primary w-100 rounded-3 py-2">
+              Event Details & Schedule
+            </a>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-12 text-center py-4 text-muted">
+        <p>No upcoming events currently scheduled.</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+<!-- Interactive Campus Gallery Carousel / Slider Section -->
+<section class="section-padding bg-white overflow-hidden position-relative" id="campusGallerySection">
+  <div class="container">
+    <div class="d-flex flex-wrap justify-content-between align-items-end mb-4">
+      <div>
+        <span class="section-subtitle"><i class="fa-solid fa-camera-retro text-warning me-1"></i> Life at Holy Family</span>
+        <h2 class="section-title mb-1">Campus Moments & Gallery</h2>
+        <p class="text-muted small mb-0">Capturing our students' academic triumphs, cultural festivities, and athletic milestones in Bhimdatta.</p>
+      </div>
+      <div class="d-flex align-items-center gap-2 mt-3 mt-md-0">
+        <!-- Navigation Buttons -->
+        <button type="button" class="gallery-nav-btn" id="galleryPrevBtn" aria-label="Previous Slide">
+          <i class="fa-solid fa-arrow-left"></i>
+        </button>
+        <button type="button" class="gallery-nav-btn" id="galleryNextBtn" aria-label="Next Slide">
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+        <a href="{% url 'gallery' %}" class="btn btn-hf-outline btn-sm rounded-pill px-3 ms-2">
+          <span>Full Album</span> <i class="fa-solid fa-arrow-up-right-from-square ms-1 fa-xs"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Gallery Slider Track Container -->
+    <div class="gallery-slider-viewport position-relative" id="gallerySliderViewport">
+      <div class="gallery-slider-track" id="gallerySliderTrack">
+        {% for album in albums %}
+        <div class="gallery-slide-card">
+          <div class="gallery-img-box">
+            {% if album.cover_image %}
+              <img src="{{ album.cover_image.url }}" alt="{{ album.title }}" class="gallery-img" loading="lazy">
+            {% elif album.photos.first and album.photos.first.image %}
+              <img src="{{ album.photos.first.image.url }}" alt="{{ album.title }}" class="gallery-img" loading="lazy">
+            {% else %}
+              <img src="{% static 'images/campus-about.jpg' %}" alt="{{ album.title }}" class="gallery-img" loading="lazy">
+            {% endif %}
+            <div class="gallery-overlay">
+              <span class="badge bg-warning text-dark mb-2"><i class="fa-solid fa-camera me-1"></i> {{ album.photos.count }} Photos</span>
+              <h5 class="text-white fw-bold mb-1">{{ album.title }}</h5>
+              <p class="text-white-50 small mb-0">{{ album.description|default:"Campus moments at Holy Family."|truncatewords:14 }}</p>
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <!-- Default Demo Highlights if no albums exist -->
+        <div class="gallery-slide-card">
+          <div class="gallery-img-box">
+            <img src="{% static 'images/campus-about.jpg' %}" alt="Campus Main Building & Grounds" class="gallery-img" loading="lazy">
+            <div class="gallery-overlay">
+              <span class="badge bg-warning text-dark mb-2"><i class="fa-solid fa-landmark me-1"></i> Infrastructure</span>
+              <h5 class="text-white fw-bold mb-1">Bhimdatta Academic Campus</h5>
+              <p class="text-white-50 small mb-0">Serene environment equipped with smart classrooms and expansive sports courts.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="gallery-slide-card">
+          <div class="gallery-img-box">
+            <img src="{% static 'images/hero-students.jpg' %}" alt="Student Classroom & Science Innovation" class="gallery-img" loading="lazy">
+            <div class="gallery-overlay">
+              <span class="badge bg-primary text-white mb-2"><i class="fa-solid fa-microscope me-1"></i> STEM & Labs</span>
+              <h5 class="text-white fw-bold mb-1">Science & Robotics Laboratory</h5>
+              <p class="text-white-50 small mb-0">Hands-on practical exploration in physics, chemistry, biology, and robotics.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="gallery-slide-card">
+          <div class="gallery-img-box">
+            <img src="{% static 'images/hero-students.jpg' %}" alt="National Education Day & Celebrations" class="gallery-img" loading="lazy" style="filter: hue-rotate(15deg);">
+            <div class="gallery-overlay">
+              <span class="badge bg-danger text-white mb-2"><i class="fa-solid fa-flag me-1"></i> National Days</span>
+              <h5 class="text-white fw-bold mb-1">Education Day & Cultural Rally</h5>
+              <p class="text-white-50 small mb-0">Cultivating civic duty, patriotism, and social responsibility in students.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="gallery-slide-card">
+          <div class="gallery-img-box">
+            <img src="{% static 'images/principal-default.jpg' %}" alt="Leadership & Award Felicitation" class="gallery-img" loading="lazy">
+            <div class="gallery-overlay">
+              <span class="badge bg-success text-white mb-2"><i class="fa-solid fa-trophy me-1"></i> Accolades</span>
+              <h5 class="text-white fw-bold mb-1">Annual Sports & Awards Meet</h5>
+              <p class="text-white-50 small mb-0">Recognizing young champions and celebrating holistic athletic excellence.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="gallery-slide-card">
+          <div class="gallery-img-box">
+            <img src="{% static 'images/campus-about.jpg' %}" alt="Library and Study Zone" class="gallery-img" loading="lazy" style="filter: saturate(1.2);">
+            <div class="gallery-overlay">
+              <span class="badge bg-info text-dark mb-2"><i class="fa-solid fa-book-open me-1"></i> Learning</span>
+              <h5 class="text-white fw-bold mb-1">Modern Digital Resource Hub</h5>
+              <p class="text-white-50 small mb-0">Vast collection of academic literature, reference guides, and digital periodicals.</p>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Slider Pagination Dots & Autoplay Bar -->
+    <div class="d-flex align-items-center justify-content-between mt-3 pt-2">
+      <div class="gallery-dots d-flex align-items-center gap-2" id="galleryDots">
+        <!-- Dots injected by JS -->
+      </div>
+      <div class="d-flex align-items-center gap-2 text-muted small">
+        <button type="button" class="btn btn-sm btn-link text-muted p-0 text-decoration-none" id="galleryPlayPauseBtn">
+          <i class="fa-solid fa-pause me-1"></i> <span>Pause Slideshow</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials & Community Feedback -->
+<section class="section-padding bg-white">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-subtitle"><i class="fa-solid fa-comments text-warning me-1"></i> Voice of the Community</span>
+      <h2 class="section-title">What Parents & Alumni Say</h2>
+      <p class="section-lead">Real reflections from our vibrant and growing school family in Sudurpashchim.</p>
+    </div>
+
+    <div class="row g-4">
+      {% for item in testimonials %}
+      <div class="col-lg-3 col-md-6">
+        <div class="hf-card p-4 d-flex flex-column rounded-4 h-100 shadow-sm border">
+          <div class="text-warning mb-3 d-flex gap-1" style="font-size: 0.85rem;">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          </div>
+          <p class="text-muted small fst-italic flex-grow-1 mb-4 leading-relaxed">"{{ item.content }}"</p>
+          <div class="d-flex align-items-center gap-3 pt-3 border-top">
+            <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold text-white shadow-xs" style="width: 42px; height: 42px; background: linear-gradient(135deg, #0f2b59, #1a56db); font-size: 1.1rem;">
+              {{ item.author_name|slice:":1" }}
+            </div>
+            <div>
+              <h6 class="mb-0 fw-bold small text-dark">{{ item.author_name }}</h6>
+              <small class="text-muted" style="font-size: 0.72rem;">{{ item.relation_or_batch }}</small>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- CTA Ribbon Banner -->
+<section class="py-5 position-relative overflow-hidden" style="background: radial-gradient(circle at 80% 20%, #1e3a8a 0%, #0f2b59 55%, #07162c 100%); color: #fff;">
+  <div class="container text-center py-4 position-relative z-1">
+    <span class="badge bg-warning text-dark text-uppercase px-3 py-2 fw-bold mb-3 shadow-xs">
+      <i class="fa-solid fa-sparkles me-1"></i> Admissions Open 2026 - 2027
+    </span>
+    <h2 class="display-6 fw-bold text-white mb-3">Join the Holy Family Community</h2>
+    <p class="lead text-white-50 mx-auto mb-4" style="max-width: 650px;">
+      Give your child the foundation of leadership, knowledge, and moral excellence. Early application and scholarship evaluations are underway.
+    </p>
+    <div class="d-flex justify-content-center gap-3 flex-wrap">
+      <a href="{% url 'admissions' %}#applyForm" class="btn btn-hf-gold btn-lg shadow-sm">
+        <i class="fa-solid fa-paper-plane me-2"></i> Complete Online Application
+      </a>
+      <a href="{% url 'contact' %}" class="btn btn-outline-light btn-lg shadow-xs">
+        <i class="fa-solid fa-calendar-check me-2"></i> Schedule Campus Visit
+      </a>
+    </div>
+  </div>
+</section>
+{% endblock %}

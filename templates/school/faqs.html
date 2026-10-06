@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Frequently Asked Questions | Holi Family Secondary School{% endblock %}
+
+{% block content %}
+<div class="py-5" style="background: linear-gradient(135deg, #07162c, #0f2b59); color: #fff;">
+  <div class="container text-center py-4">
+    <span class="badge bg-warning text-dark text-uppercase px-3 py-2 fw-bold mb-2">Help & Answers</span>
+    <h1 class="display-4 fw-bold text-white mb-2">Frequently Asked Questions</h1>
+    <p class="lead text-white-50 mx-auto" style="max-width: 600px;">Everything you need to know about enrollment, school life, transportation, and facilities.</p>
+  </div>
+</div>
+
+<section class="section-padding bg-light">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="accordion" id="faqAccordion">
+          {% for faq in faqs %}
+          <div class="accordion-item mb-3 rounded-3 border overflow-hidden shadow-sm">
+            <h2 class="accordion-header" id="heading{{ faq.id }}">
+              <button class="accordion-button {% if not forloop.first %}collapsed{% endif %} fw-bold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ faq.id }}">
+                {{ faq.question }}
+              </button>
+            </h2>
+            <div id="collapse{{ faq.id }}" class="accordion-collapse collapse {% if forloop.first %}show{% endif %}" data-bs-parent="#faqAccordion">
+              <div class="accordion-body text-secondary leading-relaxed bg-white">
+                {{ faq.answer }}
+              </div>
+            </div>
+          </div>
+          {% empty %}
+          <div class="bg-white p-5 rounded-4 shadow-sm border text-center text-muted">
+            <p>FAQ repository currently updating.</p>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

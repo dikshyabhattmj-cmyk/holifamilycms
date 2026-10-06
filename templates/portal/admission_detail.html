@@ -1,0 +1,103 @@
+{% extends 'portal/base_admin.html' %}
+
+{% block page_title %}Application Details: {{ application.application_reference_no }}{% endblock %}
+
+{% block admin_content %}
+<div class="row g-4">
+  <div class="col-lg-8">
+    <div class="bg-white p-4 p-md-5 rounded-4 border shadow-sm">
+      <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
+        <div>
+          <span class="badge bg-primary">Ref: {{ application.application_reference_no }}</span>
+          <h3 class="fw-bold text-dark mt-2 mb-0">{{ application.first_name }} {{ application.last_name }}</h3>
+        </div>
+        <div>
+          <span class="badge bg-secondary-subtle text-secondary fs-6">{{ application.created_at|date:"F d, Y" }}</span>
+        </div>
+      </div>
+
+      <h5 class="fw-bold text-primary mb-3">Student Profile</h5>
+      <div class="row g-3 mb-4">
+        <div class="col-md-6">
+          <small class="text-muted d-block">Applying For Grade:</small>
+          <strong class="text-dark">{{ application.applied_grade }}</strong>
+        </div>
+        <div class="col-md-6">
+          <small class="text-muted d-block">Date of Birth:</small>
+          <strong class="text-dark">{{ application.date_of_birth }} ({{ application.get_gender_display }})</strong>
+        </div>
+        <div class="col-md-6">
+          <small class="text-muted d-block">Previous School:</small>
+          <strong class="text-dark">{{ application.previous_school|default:"Not Specified" }}</strong>
+        </div>
+        <div class="col-md-6">
+          <small class="text-muted d-block">Previous Score / GPA:</small>
+          <strong class="text-dark">{{ application.previous_gpa_or_grade|default:"Not Specified" }}</strong>
+        </div>
+      </div>
+
+      <h5 class="fw-bold text-primary mb-3 pt-3 border-top">Parent / Guardian Information</h5>
+      <div class="row g-3 mb-4">
+        <div class="col-md-6">
+          <small class="text-muted d-block">Guardian Name:</small>
+          <strong class="text-dark">{{ application.guardian_name }} ({{ application.guardian_relationship }})</strong>
+        </div>
+        <div class="col-md-6">
+          <small class="text-muted d-block">Phone Number:</small>
+          <strong class="text-dark">{{ application.guardian_phone }}</strong>
+        </div>
+        <div class="col-md-6">
+          <small class="text-muted d-block">Email:</small>
+          <strong class="text-dark">{{ application.guardian_email }}</strong>
+        </div>
+        <div class="col-md-6">
+          <small class="text-muted d-block">Occupation:</small>
+          <strong class="text-dark">{{ application.guardian_occupation|default:"Not Specified" }}</strong>
+        </div>
+        <div class="col-12">
+          <small class="text-muted d-block">Residential Address:</small>
+          <strong class="text-dark">{{ application.residential_address }}</strong>
+        </div>
+      </div>
+
+      {% if application.statement_or_notes %}
+      <h5 class="fw-bold text-primary mb-2 pt-3 border-top">Special Notes / Medical Background</h5>
+      <p class="text-muted small mb-4">{{ application.statement_or_notes }}</p>
+      {% endif %}
+
+      <div class="pt-3 border-top d-flex gap-3">
+        {% if application.birth_certificate %}
+        <a href="{{ application.birth_certificate.url }}" target="_blank" class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-file-pdf me-1"></i> View Birth Certificate</a>
+        {% endif %}
+        {% if application.previous_marksheet %}
+        <a href="{{ application.previous_marksheet.url }}" target="_blank" class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-file-lines me-1"></i> View Marksheet</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Status Control Panel -->
+  <div class="col-lg-4">
+    <div class="bg-white p-4 rounded-4 border shadow-sm">
+      <h5 class="fw-bold text-dark mb-3">Update Application Decision</h5>
+      <form method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label class="form-label fw-bold">Application Status</label>
+          {{ form.status }}
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-bold">Internal Admin Notes</label>
+          {{ form.admin_notes }}
+          <small class="text-muted">Visible to parents via status tracking portal.</small>
+        </div>
+        <button type="submit" class="btn btn-primary w-100 fw-bold">Save Decision</button>
+      </form>
+
+      <div class="mt-4 pt-3 border-top">
+        <a href="{% url 'portal:manage_admissions' %}" class="btn btn-outline-secondary w-100 btn-sm"><i class="fa-solid fa-arrow-left me-1"></i> Return to List</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

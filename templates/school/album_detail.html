@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ album.title }} | Gallery | Holi Family Secondary School{% endblock %}
+
+{% block content %}
+<!-- Header Banner -->
+<div class="py-5" style="background: radial-gradient(circle at 75% 20%, #1e3a8a 0%, #0f2b59 55%, #07162c 100%); color: #fff;">
+  <div class="container text-center py-4">
+    <span class="badge bg-warning text-dark text-uppercase px-3 py-2 fw-bold mb-2 shadow-xs">
+      <i class="fa-solid fa-images me-1"></i> Album Collection
+    </span>
+    <h1 class="display-4 fw-bold text-white mb-2">{{ album.title }}</h1>
+    <p class="lead text-white-50 mx-auto" style="max-width: 620px;">{{ album.description|default:"Moments and memories captured across our school community." }}</p>
+  </div>
+</div>
+
+<section class="section-padding" style="background-color: var(--hf-bg-light);">
+  <div class="container">
+    <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+      <a href="{% url 'gallery' %}" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+        <i class="fa-solid fa-arrow-left me-1"></i> Back to All Albums
+      </a>
+      <span class="badge bg-primary px-3 py-2 rounded-pill small">
+        {{ photos|length }} Total Photos
+      </span>
+    </div>
+
+    <div class="row g-4">
+      {% for photo in photos %}
+      <div class="col-lg-4 col-md-6">
+        <div class="photo-card position-relative rounded-4 overflow-hidden shadow-sm border bg-white h-100">
+          <div class="photo-img-box position-relative overflow-hidden" style="height: 260px;">
+            {% if photo.image %}
+              <img src="{{ photo.image.url }}" alt="{{ photo.caption|default:album.title }}" class="w-100 h-100 object-fit-cover photo-zoom-img" loading="lazy">
+            {% else %}
+              <div class="w-100 h-100 d-flex align-items-center justify-content-center bg-light text-muted">
+                <i class="fa-regular fa-image fs-1"></i>
+              </div>
+            {% endif %}
+
+            <!-- Overlay on hover -->
+            <div class="photo-overlay d-flex flex-column justify-content-end p-3">
+              {% if photo.caption %}
+                <p class="text-white small fw-semibold mb-0 drop-shadow">{{ photo.caption }}</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-12 text-center text-muted py-5">
+        <div class="p-5 bg-white rounded-4 border shadow-sm max-w-md mx-auto" style="max-width: 500px;">
+          <i class="fa-solid fa-images text-muted fs-1 mb-3"></i>
+          <h5 class="fw-bold text-dark">No Photos Added Yet</h5>
+          <p class="small text-muted mb-0">Photos for this album will be uploaded by the administration soon.</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

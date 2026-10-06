@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Application Status Tracker | Holi Family Secondary School{% endblock %}
+
+{% block content %}
+<div class="py-5" style="background: linear-gradient(135deg, #07162c, #0f2b59); color: #fff;">
+  <div class="container text-center py-4">
+    <span class="badge bg-warning text-dark text-uppercase px-3 py-2 fw-bold mb-2">Enrollment Tracker</span>
+    <h1 class="display-4 fw-bold text-white mb-2">Check Application Status</h1>
+    <p class="lead text-white-50 mx-auto" style="max-width: 600px;">Enter your unique admission application reference number to view progress.</p>
+  </div>
+</div>
+
+<section class="section-padding bg-light">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-7">
+        <div class="bg-white p-4 p-md-5 rounded-4 shadow-sm border mb-4">
+          <form method="GET" action="{% url 'admission_status' %}" class="d-flex gap-2">
+            <input type="text" name="ref" value="{{ ref }}" class="form-control form-control-lg" placeholder="e.g. HFSS-123456" required>
+            <button type="submit" class="btn btn-hf-primary px-4 fw-semibold">Check</button>
+          </form>
+        </div>
+
+        {% if searched %}
+          {% if application %}
+          <div class="bg-white p-4 p-md-5 rounded-4 shadow-sm border">
+            <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
+              <div>
+                <span class="badge bg-light text-secondary border">Reference: {{ application.application_reference_no }}</span>
+                <h4 class="fw-bold text-dark mt-1 mb-0">{{ application.first_name }} {{ application.last_name }}</h4>
+              </div>
+              <div>
+                {% if application.status == 'pending' %}
+                  <span class="badge bg-warning text-dark fs-6 px-3 py-2"><i class="fa-solid fa-hourglass-half me-1"></i> Under Review</span>
+                {% elif application.status == 'shortlisted' %}
+                  <span class="badge bg-info text-dark fs-6 px-3 py-2"><i class="fa-solid fa-user-clock me-1"></i> Interview Scheduled</span>
+                {% elif application.status == 'accepted' %}
+                  <span class="badge bg-success fs-6 px-3 py-2"><i class="fa-solid fa-check me-1"></i> Offered Admission</span>
+                {% else %}
+                  <span class="badge bg-secondary fs-6 px-3 py-2">Status: {{ application.get_status_display }}</span>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="row g-3 small">
+              <div class="col-6 text-muted">Applied Level / Grade:</div>
+              <div class="col-6 fw-bold text-dark">{{ application.applied_grade }}</div>
+
+              <div class="col-6 text-muted">Submission Date:</div>
+              <div class="col-6 fw-bold text-dark">{{ application.created_at|date:"F d, Y" }}</div>
+
+              <div class="col-6 text-muted">Guardian Name:</div>
+              <div class="col-6 fw-bold text-dark">{{ application.guardian_name }}</div>
+            </div>
+
+            {% if application.admin_notes %}
+            <div class="mt-4 p-3 bg-light rounded border">
+              <h6 class="fw-bold text-primary mb-1">Admissions Office Notice:</h6>
+              <p class="small text-secondary mb-0">{{ application.admin_notes }}</p>
+            </div>
+            {% endif %}
+          </div>
+          {% else %}
+          <div class="alert alert-warning text-center rounded-3 p-4 shadow-sm">
+            <i class="fa-solid fa-circle-exclamation fs-3 mb-2 d-block"></i>
+            No application found matching reference number <strong>"{{ ref }}"</strong>. Please verify the code or contact the school office.
+          </div>
+          {% endif %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

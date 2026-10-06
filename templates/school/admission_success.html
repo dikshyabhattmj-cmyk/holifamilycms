@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Application Received | Holi Family Secondary School{% endblock %}
+
+{% block content %}
+<section class="section-padding bg-light">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="bg-white p-5 rounded-4 shadow-sm border text-center">
+          <div class="text-success display-3 mb-3">
+            <i class="fa-solid fa-circle-check"></i>
+          </div>
+          <h2 class="fw-bold mb-2">Application Submitted Successfully!</h2>
+          <p class="text-muted mb-4">Your application for admission has been logged into our school registry.</p>
+          
+          <div class="bg-light p-4 rounded-3 border my-4">
+            <span class="text-muted small text-uppercase fw-bold">Your Tracking Reference Number</span>
+            <div class="h2 fw-bold text-primary mt-1 mb-0">{{ application.application_reference_no }}</div>
+          </div>
+
+          <p class="small text-muted mb-4">
+            A confirmation receipt will be sent to <strong>{{ application.guardian_email }}</strong>. You can use this reference number anytime on our status portal to check the evaluation status.
+          </p>
+
+          <div class="d-flex justify-content-center gap-3">
+            <a href="{% url 'admission_status' %}?ref={{ application.application_reference_no }}" class="btn btn-hf-primary">Track Application Status</a>
+            <a href="{% url 'home' %}" class="btn btn-outline-secondary">Return to Homepage</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

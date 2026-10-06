@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Downloads & Academic Resources | Holi Family Secondary School{% endblock %}
+
+{% block content %}
+<div class="py-5" style="background: linear-gradient(135deg, #07162c, #0f2b59); color: #fff;">
+  <div class="container text-center py-4">
+    <span class="badge bg-warning text-dark text-uppercase px-3 py-2 fw-bold mb-2">Academic Downloads</span>
+    <h1 class="display-4 fw-bold text-white mb-2">Student Handbooks, Routines & Syllabus</h1>
+    <p class="lead text-white-50 mx-auto" style="max-width: 600px;">Direct access to academic resources, exam schedules, and curriculum PDFs.</p>
+  </div>
+</div>
+
+<section class="section-padding bg-light">
+  <div class="container">
+    <div class="bg-white p-4 p-md-5 rounded-4 shadow-sm border">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th scope="col" style="width: 45%;">Resource Title</th>
+              <th scope="col">Type / Category</th>
+              <th scope="col">Grade Level</th>
+              <th scope="col">Upload Date</th>
+              <th scope="col" class="text-end">Download</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for res in resources %}
+            <tr>
+              <td>
+                <div class="d-flex align-items-center gap-3">
+                  <i class="fa-solid fa-file-pdf text-danger fs-3"></i>
+                  <div>
+                    <h6 class="mb-0 fw-bold">{{ res.title }}</h6>
+                    <small class="text-muted">{{ res.description }}</small>
+                  </div>
+                </div>
+              </td>
+              <td><span class="badge bg-light text-primary border">{{ res.get_resource_type_display }}</span></td>
+              <td><span class="badge bg-secondary-subtle text-secondary">{{ res.grade_level }}</span></td>
+              <td class="small text-muted">{{ res.uploaded_at|date:"M d, Y" }}</td>
+              <td class="text-end">
+                <a href="{{ res.file.url }}" class="btn btn-sm btn-hf-primary" download target="_blank">
+                  <i class="fa-solid fa-download me-1"></i> PDF
+                </a>
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="5" class="text-center py-4 text-muted">No academic resources published for download at this time.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

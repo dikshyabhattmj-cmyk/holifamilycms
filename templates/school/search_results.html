@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Search Results for "{{ query }}" | Holi Family Secondary School{% endblock %}
+
+{% block content %}
+<div class="py-5" style="background: linear-gradient(135deg, #07162c, #0f2b59); color: #fff;">
+  <div class="container text-center py-4">
+    <span class="badge bg-warning text-dark text-uppercase px-3 py-2 fw-bold mb-2">Search Query</span>
+    <h1 class="h2 fw-bold text-white mb-2">Results for "{{ query }}"</h1>
+    <p class="text-white-50 small mb-0">Explore matching notices, programs, blogs, faculty, and school events.</p>
+  </div>
+</div>
+
+<section class="section-padding bg-light">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="bg-white p-4 p-md-5 rounded-4 shadow-sm border mb-4">
+          <form method="GET" action="{% url 'search' %}" class="d-flex gap-2">
+            <input type="text" name="q" value="{{ query }}" class="form-control form-control-lg" placeholder="Search entire website..." required>
+            <button type="submit" class="btn btn-hf-primary px-4 fw-semibold">Search</button>
+          </form>
+        </div>
+
+        {% if query %}
+          <!-- Notices Results -->
+          {% if results.notices %}
+          <div class="bg-white p-4 rounded-4 shadow-sm border mb-4">
+            <h5 class="fw-bold text-primary mb-3"><i class="fa-solid fa-bullhorn me-2"></i> Notices & Circulars ({{ results.notices|length }})</h5>
+            <ul class="list-unstyled mb-0">
+              {% for n in results.notices %}
+              <li class="mb-2 pb-2 border-bottom">
+                <a href="{% url 'notice_detail' n.slug %}" class="fw-bold text-dark text-decoration-none hover-gold">{{ n.title }}</a>
+                <p class="small text-muted mb-0">{{ n.summary|default:n.content|truncatewords:20 }}</p>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% endif %}
+
+          <!-- Programs Results -->
+          {% if results.programs %}
+          <div class="bg-white p-4 rounded-4 shadow-sm border mb-4">
+            <h5 class="fw-bold text-primary mb-3"><i class="fa-solid fa-book-bookmark me-2"></i> Academic Programs ({{ results.programs|length }})</h5>
+            <ul class="list-unstyled mb-0">
+              {% for p in results.programs %}
+              <li class="mb-2 pb-2 border-bottom">
+                <a href="{% url 'program_detail' p.slug %}" class="fw-bold text-dark text-decoration-none hover-gold">{{ p.name }}</a>
+                <p class="small text-muted mb-0">{{ p.description|truncatewords:20 }}</p>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% endif %}
+
+          <!-- Blogs Results -->
+          {% if results.blogs %}
+          <div class="bg-white p-4 rounded-4 shadow-sm border mb-4">
+            <h5 class="fw-bold text-primary mb-3"><i class="fa-solid fa-newspaper me-2"></i> News & Blogs ({{ results.blogs|length }})</h5>
+            <ul class="list-unstyled mb-0">
+              {% for b in results.blogs %}
+              <li class="mb-2 pb-2 border-bottom">
+                <a href="{% url 'blog_detail' b.slug %}" class="fw-bold text-dark text-decoration-none hover-gold">{{ b.title }}</a>
+                <p class="small text-muted mb-0">{{ b.excerpt|truncatewords:20 }}</p>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% endif %}
+
+          <!-- Faculty Results -->
+          {% if results.staff %}
+          <div class="bg-white p-4 rounded-4 shadow-sm border mb-4">
+            <h5 class="fw-bold text-primary mb-3"><i class="fa-solid fa-users me-2"></i> Faculty Members ({{ results.staff|length }})</h5>
+            <ul class="list-unstyled mb-0">
+              {% for s in results.staff %}
+              <li class="mb-2 pb-2 border-bottom d-flex justify-content-between align-items-center">
+                <div>
+                  <h6 class="fw-bold mb-0">{{ s.name }}</h6>
+                  <small class="text-muted">{{ s.designation }} &bull; {{ s.department }}</small>
+                </div>
+                <a href="{% url 'teachers' %}?q={{ s.name }}" class="btn btn-sm btn-outline-primary">View</a>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% endif %}
+
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

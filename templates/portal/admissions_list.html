@@ -1,0 +1,57 @@
+{% extends 'portal/base_admin.html' %}
+
+{% block page_title %}Manage Admissions{% endblock %}
+
+{% block admin_content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h4 class="fw-bold text-dark mb-0">Admission Applications</h4>
+  <div class="d-flex gap-2">
+    <a href="{% url 'portal:manage_admissions' %}" class="btn btn-sm btn-outline-secondary {% if not status_filter %}active{% endif %}">All</a>
+    <a href="{% url 'portal:manage_admissions' %}?status=pending" class="btn btn-sm btn-outline-warning {% if status_filter == 'pending' %}active{% endif %}">Pending</a>
+    <a href="{% url 'portal:manage_admissions' %}?status=shortlisted" class="btn btn-sm btn-outline-info {% if status_filter == 'shortlisted' %}active{% endif %}">Shortlisted</a>
+    <a href="{% url 'portal:manage_admissions' %}?status=accepted" class="btn btn-sm btn-outline-success {% if status_filter == 'accepted' %}active{% endif %}">Accepted</a>
+  </div>
+</div>
+
+<div class="bg-white p-4 rounded-4 border shadow-sm">
+  <div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>Ref ID</th>
+          <th>Student Name</th>
+          <th>Applied Grade</th>
+          <th>Guardian Phone</th>
+          <th>Status</th>
+          <th>Submission Date</th>
+          <th class="text-end">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for app in applications %}
+        <tr>
+          <td class="fw-bold text-primary">{{ app.application_reference_no }}</td>
+          <td>{{ app.first_name }} {{ app.last_name }}</td>
+          <td><span class="badge bg-light text-secondary border">{{ app.applied_grade }}</span></td>
+          <td>{{ app.guardian_phone }}</td>
+          <td>
+            {% if app.status == 'pending' %}<span class="badge bg-warning text-dark">Under Review</span>
+            {% elif app.status == 'shortlisted' %}<span class="badge bg-info text-dark">Shortlisted</span>
+            {% elif app.status == 'accepted' %}<span class="badge bg-success">Accepted</span>
+            {% else %}<span class="badge bg-secondary">{{ app.get_status_display }}</span>{% endif %}
+          </td>
+          <td class="small text-muted">{{ app.created_at|date:"M d, Y" }}</td>
+          <td class="text-end">
+            <a href="{% url 'portal:view_admission' app.pk %}" class="btn btn-sm btn-primary">Review & Action</a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="7" class="text-center py-4 text-muted">No applications found in this category.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ notice.title }} | Holi Family Secondary School{% endblock %}
+
+{% block content %}
+<div class="py-5" style="background: linear-gradient(135deg, #07162c, #0f2b59); color: #fff;">
+  <div class="container text-center py-4">
+    <span class="badge bg-warning text-dark text-uppercase px-3 py-2 fw-bold mb-2">{{ notice.get_category_display }}</span>
+    <h1 class="h2 fw-bold text-white mb-2">{{ notice.title }}</h1>
+    <p class="text-white-50 small mb-0"><i class="fa-regular fa-calendar-days me-1"></i> Published: {{ notice.publish_date|date:"F d, Y" }}</p>
+  </div>
+</div>
+
+<section class="section-padding bg-light">
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-8">
+        <div class="bg-white p-4 p-md-5 rounded-4 shadow-sm border">
+          <div class="d-flex align-items-center gap-2 mb-4 pb-3 border-bottom">
+            <span class="badge bg-primary px-3 py-2">{{ notice.get_category_display }}</span>
+            {% if notice.is_pinned %}<span class="badge bg-warning text-dark"><i class="fa-solid fa-thumbtack"></i> Pinned</span>{% endif %}
+            {% if notice.is_urgent %}<span class="badge bg-danger text-white">Urgent Notice</span>{% endif %}
+          </div>
+
+          <div class="notice-body text-secondary leading-relaxed mb-4" style="line-height: 1.8;">
+            {{ notice.content|linebreaks }}
+          </div>
+
+          {% if notice.attachment %}
+          <div class="p-4 bg-light rounded-3 border d-flex justify-content-between align-items-center my-4">
+            <div class="d-flex align-items-center gap-3">
+              <i class="fa-solid fa-file-pdf text-danger fs-2"></i>
+              <div>
+                <h6 class="mb-0 fw-bold">Official Document Attachment</h6>
+                <small class="text-muted">Click to view or download full PDF notice</small>
+              </div>
+            </div>
+            <a href="{{ notice.attachment.url }}" class="btn btn-hf-primary btn-sm" target="_blank" download>
+              <i class="fa-solid fa-download me-1"></i> Download File
+            </a>
+          </div>
+          {% endif %}
+
+          <div class="pt-4 border-top d-flex justify-content-between align-items-center">
+            <a href="{% url 'notices' %}" class="btn btn-outline-secondary btn-sm"><i class="fa-solid fa-arrow-left me-1"></i> Back to Notices</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="bg-white p-4 rounded-4 shadow-sm border">
+          <h5 class="fw-bold mb-3">Recent Circulars</h5>
+          <ul class="list-unstyled mb-0">
+            {% for recent in recent_notices %}
+            <li class="mb-3 pb-3 border-bottom">
+              <span class="badge bg-light text-secondary border small mb-1">{{ recent.publish_date|date:"M d, Y" }}</span>
+              <h6 class="fw-semibold mb-0">
+                <a href="{% url 'notice_detail' recent.slug %}" class="text-dark hover-gold text-decoration-none">{{ recent.title }}</a>
+              </h6>
+            </li>
+            {% empty %}
+            <li class="text-muted small">No other circulars found.</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

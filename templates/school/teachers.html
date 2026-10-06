@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Faculty & Staff | Holi Family Secondary School{% endblock %}
+
+{% block content %}
+<div class="py-5" style="background: linear-gradient(135deg, #07162c, #0f2b59); color: #fff;">
+  <div class="container text-center py-4">
+    <span class="badge bg-warning text-dark text-uppercase px-3 py-2 fw-bold mb-2">Our Mentors & Educators</span>
+    <h1 class="display-4 fw-bold text-white mb-2">Qualified Faculty & Staff</h1>
+    <p class="lead text-white-50 mx-auto" style="max-width: 600px;">Passionate educators dedicated to inspiring curiosity and character.</p>
+  </div>
+</div>
+
+<section class="section-padding bg-light">
+  <div class="container">
+    <!-- Filter Bar -->
+    <div class="bg-white p-4 rounded-4 shadow-sm border mb-5">
+      <form method="GET" class="row g-3">
+        <div class="col-md-4">
+          <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="Search teacher by name or subject...">
+        </div>
+        <div class="col-md-3">
+          <select name="type" class="form-select">
+            <option value="">All Staff Roles</option>
+            <option value="management" {% if selected_type == 'management' %}selected{% endif %}>Leadership & Admin</option>
+            <option value="teacher" {% if selected_type == 'teacher' %}selected{% endif %}>Teaching Faculty</option>
+            <option value="counselor" {% if selected_type == 'counselor' %}selected{% endif %}>Counselor & Welfare</option>
+            <option value="support" {% if selected_type == 'support' %}selected{% endif %}>Administrative Staff</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <select name="dept" class="form-select">
+            <option value="">All Departments</option>
+            {% for dept in departments %}
+            <option value="{{ dept }}" {% if selected_dept == dept %}selected{% endif %}>{{ dept }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-2">
+          <button type="submit" class="btn btn-hf-primary w-100 fw-semibold"><i class="fa-solid fa-filter me-1"></i> Filter</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Staff Grid -->
+    <div class="row g-4">
+      {% for member in staff %}
+      <div class="col-lg-3 col-md-6">
+        <div class="teacher-card h-100 d-flex flex-column">
+          <div class="teacher-img-wrap d-flex align-items-center justify-content-center bg-primary-subtle text-primary" style="height: 220px;">
+            <i class="fa-solid fa-user-graduate" style="font-size: 5rem;"></i>
+          </div>
+          <div class="p-4 flex-grow-1 d-flex flex-column">
+            <span class="badge bg-light text-primary border align-self-start mb-2">{{ member.get_staff_type_display }}</span>
+            <h5 class="fw-bold text-dark mb-1">{{ member.name }}</h5>
+            <p class="text-primary small fw-semibold mb-2">{{ member.designation }}</p>
+            <p class="text-muted small mb-3"><strong>Department:</strong> {{ member.department }}</p>
+            <p class="text-muted small mb-3"><strong>Qualification:</strong> {{ member.qualification }}</p>
+            {% if member.subject_specialization %}
+            <p class="small text-secondary mb-3"><i class="fa-solid fa-book-open text-muted me-1"></i> {{ member.subject_specialization }}</p>
+            {% endif %}
+            <div class="mt-auto pt-3 border-top d-flex justify-content-between text-muted small">
+              <span><i class="fa-solid fa-award text-warning me-1"></i> {{ member.experience_years }} Yrs Exp</span>
+              {% if member.email %}<span><i class="fa-solid fa-envelope text-primary"></i></span>{% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-12 text-center py-5 text-muted">
+        <p>No faculty profiles matched your filter criteria.</p>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if staff.has_other_pages %}
+    <nav class="mt-5 d-flex justify-content-center">
+      <ul class="pagination">
+        {% if staff.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page={{ staff.previous_page_number }}&q={{ query }}&type={{ selected_type }}&dept={{ selected_dept }}">Previous</a></li>
+        {% endif %}
+        <li class="page-item active"><span class="page-link">{{ staff.number }}</span></li>
+        {% if staff.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ staff.next_page_number }}&q={{ query }}&type={{ selected_type }}&dept={{ selected_dept }}">Next</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

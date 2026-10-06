@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Online Admissions 2026-2027 | Holi Family Secondary School{% endblock %}
+
+{% block content %}
+<div class="py-5" style="background: linear-gradient(135deg, #07162c, #0f2b59); color: #fff;">
+  <div class="container text-center py-4">
+    <span class="badge bg-warning text-dark text-uppercase px-3 py-2 fw-bold mb-2">Admissions Open 2026-2027</span>
+    <h1 class="display-4 fw-bold text-white mb-2">Join the Holi Family Academic Tradition</h1>
+    <p class="lead text-white-50 mx-auto" style="max-width: 600px;">Streamlined admission process from Early Childhood
+      to Higher Secondary.</p>
+  </div>
+</div>
+
+<section class="section-padding bg-light">
+  <div class="container">
+    <!-- Steps Overview -->
+    <div class="row g-4 mb-5">
+      <div class="col-md-3">
+        <div class="bg-white p-4 rounded-4 shadow-sm border text-center h-100">
+          <div
+            class="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center fw-bold fs-4 mb-3"
+            style="width: 50px; height: 50px;">1</div>
+          <h6 class="fw-bold mb-1">Submit Application</h6>
+          <p class="small text-muted mb-0">Fill out the digital registration form with applicant details.</p>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="bg-white p-4 rounded-4 shadow-sm border text-center h-100">
+          <div
+            class="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center fw-bold fs-4 mb-3"
+            style="width: 50px; height: 50px;">2</div>
+          <h6 class="fw-bold mb-1">Aptitude Evaluation</h6>
+          <p class="small text-muted mb-0">Age-appropriate evaluation to understand learning readiness.</p>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="bg-white p-4 rounded-4 shadow-sm border text-center h-100">
+          <div
+            class="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center fw-bold fs-4 mb-3"
+            style="width: 50px; height: 50px;">3</div>
+          <h6 class="fw-bold mb-1">Parent Dialogue</h6>
+          <p class="small text-muted mb-0">Interactive counseling session with our academic mentors.</p>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="bg-white p-4 rounded-4 shadow-sm border text-center h-100">
+          <div
+            class="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center fw-bold fs-4 mb-3"
+            style="width: 50px; height: 50px;">4</div>
+          <h6 class="fw-bold mb-1">Seat Confirmation</h6>
+          <p class="small text-muted mb-0">Enrollment formalities and orientation handbook issuance.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Application Form Container -->
+    <div class="row justify-content-center" id="applyForm">
+      <div class="col-lg-10">
+        <div class="bg-white p-4 p-md-5 rounded-4 shadow-sm border">
+          <div class="text-center mb-4 pb-3 border-bottom">
+            <h3 class="fw-bold text-dark mb-1">Student Admission Application Form</h3>
+            <p class="text-muted small">Academic Year 2026-2027 &bull; Please ensure all details match official birth
+              and academic records.</p>
+          </div>
+
+          <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <h5 class="fw-bold text-primary mb-3"><i class="fa-solid fa-child me-2"></i> Section 1: Student Information
+            </h5>
+            <div class="row g-3 mb-4">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">First Name <span class="text-danger">*</span></label>
+                {{ form.first_name }}
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Last Name <span class="text-danger">*</span></label>
+                {{ form.last_name }}
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Date of Birth <span class="text-danger">*</span></label>
+                {{ form.date_of_birth }}
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Gender <span class="text-danger">*</span></label>
+                {{ form.gender }}
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Applying For Grade / Level <span
+                    class="text-danger">*</span></label>
+                {{ form.applied_grade }}
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Previous School Attended</label>
+                {{ form.previous_school }}
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Previous GPA / Percentage / Grade</label>
+                {{ form.previous_gpa_or_grade }}
+              </div>
+            </div>
+
+            <h5 class="fw-bold text-primary mb-3 pt-3 border-top"><i class="fa-solid fa-users me-2"></i> Section 2:
+              Parent / Guardian Details</h5>
+            <div class="row g-3 mb-4">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Guardian Full Name <span
+                    class="text-danger">*</span></label>
+                {{ form.guardian_name }}
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Relationship to Student <span
+                    class="text-danger">*</span></label>
+                {{ form.guardian_relationship }}
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Contact Phone Number <span
+                    class="text-danger">*</span></label>
+                {{ form.guardian_phone }}
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Email Address <span class="text-danger">*</span></label>
+                {{ form.guardian_email }}
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Guardian Occupation</label>
+                {{ form.guardian_occupation }}
+              </div>
+              <div class="col-12">
+                <label class="form-label fw-semibold small">Residential Address <span
+                    class="text-danger">*</span></label>
+                {{ form.residential_address }}
+              </div>
+            </div>
+
+            <h5 class="fw-bold text-primary mb-3 pt-3 border-top"><i class="fa-solid fa-file-arrow-up me-2"></i> Section
+              3: Document Attachments & Notes</h5>
+            <div class="row g-3 mb-4">
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Birth Certificate (PDF / Image)</label>
+                {{ form.birth_certificate }}
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Previous Marksheet / Report</label>
+                {{ form.previous_marksheet }}
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Passport Size Photograph</label>
+                {{ form.student_photo }}
+              </div>
+              <div class="col-12">
+                <label class="form-label fw-semibold small">Special Learning / Medical / Transport Notes</label>
+                {{ form.statement_or_notes }}
+              </div>
+            </div>
+
+            <div class="text-center pt-3 border-top">
+              <button type="submit" class="btn btn-hf-gold btn-lg px-5">
+                <i class="fa-solid fa-paper-plane me-2"></i> Submit
+
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

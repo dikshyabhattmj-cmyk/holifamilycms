@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ event.title }} | Events | Holi Family Secondary School{% endblock %}
+
+{% block content %}
+<div class="py-5" style="background: linear-gradient(135deg, #07162c, #0f2b59); color: #fff;">
+  <div class="container text-center py-4">
+    <span class="badge bg-warning text-dark text-uppercase px-3 py-2 fw-bold mb-2"><i class="fa-solid fa-calendar me-1"></i> School Event</span>
+    <h1 class="h2 fw-bold text-white mb-2">{{ event.title }}</h1>
+    <p class="text-white-50 small mb-0"><i class="fa-solid fa-location-dot me-1"></i> {{ event.location }}</p>
+  </div>
+</div>
+
+<section class="section-padding bg-light">
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-8">
+        <div class="bg-white p-4 p-md-5 rounded-4 shadow-sm border">
+          <div class="row g-3 p-3 bg-light rounded-3 mb-4 text-center">
+            <div class="col-md-4">
+              <span class="text-muted small">Date</span>
+              <div class="fw-bold text-dark">{{ event.event_date|date:"F d, Y" }}</div>
+            </div>
+            <div class="col-md-4">
+              <span class="text-muted small">Timing</span>
+              <div class="fw-bold text-dark">{{ event.start_time }} - {{ event.end_time }}</div>
+            </div>
+            <div class="col-md-4">
+              <span class="text-muted small">Venue</span>
+              <div class="fw-bold text-dark">{{ event.location }}</div>
+            </div>
+          </div>
+
+          <h4 class="fw-bold text-dark mb-3">Event Description & Program Itinerary</h4>
+          <div class="text-secondary leading-relaxed mb-4" style="line-height: 1.8;">
+            {{ event.description|linebreaks }}
+          </div>
+
+          <div class="pt-4 border-top">
+            <a href="{% url 'events' %}" class="btn btn-outline-secondary btn-sm"><i class="fa-solid fa-arrow-left me-1"></i> Back to All Events</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="bg-white p-4 rounded-4 shadow-sm border">
+          <h5 class="fw-bold mb-3">Other Upcoming Highlights</h5>
+          <ul class="list-unstyled mb-0">
+            {% for other in other_events %}
+            <li class="mb-3 pb-3 border-bottom">
+              <span class="badge bg-primary-subtle text-primary small mb-1">{{ other.event_date|date:"M d, Y" }}</span>
+              <h6 class="fw-semibold mb-0">
+                <a href="{% url 'event_detail' other.slug %}" class="text-dark hover-gold text-decoration-none">{{ other.title }}</a>
+              </h6>
+            </li>
+            {% empty %}
+            <li class="text-muted small">No other events scheduled.</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

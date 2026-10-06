@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}School News & Blog Articles | Holi Family Secondary School{% endblock %}
+
+{% block content %}
+<div class="py-5" style="background: linear-gradient(135deg, #07162c, #0f2b59); color: #fff;">
+  <div class="container text-center py-4">
+    <span class="badge bg-warning text-dark text-uppercase px-3 py-2 fw-bold mb-2">School Insights</span>
+    <h1 class="display-4 fw-bold text-white mb-2">News, Articles & Academic Insights</h1>
+    <p class="lead text-white-50 mx-auto" style="max-width: 600px;">Thoughts on 21st-century pedagogy, student accomplishments, and campus life.</p>
+  </div>
+</div>
+
+<section class="section-padding bg-light">
+  <div class="container">
+    <!-- Featured Hero Post -->
+    {% if featured_post and not query and not selected_cat %}
+    <div class="bg-white p-4 p-md-5 rounded-4 shadow-sm border mb-5">
+      <div class="row align-items-center g-4">
+        <div class="col-lg-6">
+          <div class="bg-primary text-white rounded-3 d-flex align-items-center justify-content-center p-5 text-center" style="min-height: 240px;">
+            <div>
+              <i class="fa-solid fa-newspaper fs-1 mb-2"></i>
+              <h5 class="mb-0">Featured Headline</h5>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <span class="badge bg-primary mb-2">{{ featured_post.get_category_display }}</span>
+          <h2 class="fw-bold mb-3">
+            <a href="{% url 'blog_detail' featured_post.slug %}" class="text-dark hover-gold text-decoration-none">{{ featured_post.title }}</a>
+          </h2>
+          <p class="text-muted leading-relaxed mb-4">{{ featured_post.excerpt }}</p>
+          <div class="d-flex align-items-center justify-content-between pt-3 border-top">
+            <small class="text-muted"><i class="fa-solid fa-user-pen me-1"></i> {{ featured_post.author_name }}</small>
+            <a href="{% url 'blog_detail' featured_post.slug %}" class="btn btn-hf-primary btn-sm">Read Full Article</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Articles Grid -->
+    <div class="row g-4">
+      {% for blog in blogs %}
+      <div class="col-lg-4 col-md-6">
+        <div class="hf-card p-4 d-flex flex-column">
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <span class="badge bg-light text-primary border">{{ blog.get_category_display }}</span>
+            <small class="text-muted">{{ blog.published_date|date:"M d, Y" }}</small>
+          </div>
+          <h5 class="fw-bold text-dark mb-2">
+            <a href="{% url 'blog_detail' blog.slug %}" class="text-dark hover-gold text-decoration-none">{{ blog.title }}</a>
+          </h5>
+          <p class="small text-muted flex-grow-1 mb-4">{{ blog.excerpt|truncatewords:20 }}</p>
+          <div class="pt-3 border-top d-flex align-items-center justify-content-between">
+            <small class="text-muted"><i class="fa-regular fa-eye me-1"></i> {{ blog.views_count }} reads</small>
+            <a href="{% url 'blog_detail' blog.slug %}" class="btn btn-sm btn-hf-outline">Read Story</a>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-12 text-center text-muted py-5">
+        <p>No articles found matching your request.</p>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if blogs.has_other_pages %}
+    <nav class="mt-5 d-flex justify-content-center">
+      <ul class="pagination">
+        {% if blogs.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page={{ blogs.previous_page_number }}&q={{ query }}&cat={{ selected_cat }}">Previous</a></li>
+        {% endif %}
+        <li class="page-item active"><span class="page-link">{{ blogs.number }}</span></li>
+        {% if blogs.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ blogs.next_page_number }}&q={{ query }}&cat={{ selected_cat }}">Next</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ blog.title }} | News & Blog | Holi Family Secondary School{% endblock %}
+
+{% block content %}
+<div class="py-5" style="background: linear-gradient(135deg, #07162c, #0f2b59); color: #fff;">
+  <div class="container text-center py-4">
+    <span class="badge bg-warning text-dark text-uppercase px-3 py-2 fw-bold mb-2">{{ blog.get_category_display }}</span>
+    <h1 class="h2 fw-bold text-white mb-2">{{ blog.title }}</h1>
+    <p class="text-white-50 small mb-0">By {{ blog.author_name }} &bull; Published on {{ blog.published_date|date:"F d, Y" }}</p>
+  </div>
+</div>
+
+<section class="section-padding bg-light">
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-8">
+        <div class="bg-white p-4 p-md-5 rounded-4 shadow-sm border">
+          <div class="d-flex align-items-center justify-content-between mb-4 pb-3 border-bottom">
+            <div>
+              <span class="text-muted small">Author:</span>
+              <h6 class="fw-bold mb-0 text-dark">{{ blog.author_name }} ({{ blog.author_role }})</h6>
+            </div>
+            <div class="text-muted small">
+              <i class="fa-regular fa-eye me-1"></i> {{ blog.views_count }} Reads
+            </div>
+          </div>
+
+          <div class="fs-5 text-muted fst-italic mb-4 p-3 bg-light rounded border-start border-4 border-primary">
+            {{ blog.excerpt }}
+          </div>
+
+          <div class="blog-content text-secondary leading-relaxed mb-4" style="line-height: 1.9; font-size: 1.05rem;">
+            {{ blog.content|linebreaks }}
+          </div>
+
+          <div class="pt-4 border-top d-flex justify-content-between align-items-center">
+            <a href="{% url 'blogs' %}" class="btn btn-outline-secondary btn-sm"><i class="fa-solid fa-arrow-left me-1"></i> Back to News & Articles</a>
+            <div class="d-flex gap-2">
+              <span class="small text-muted align-self-center">Share:</span>
+              <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank" class="btn btn-sm btn-outline-primary"><i class="fa-brands fa-facebook-f"></i></a>
+              <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ blog.title }}" target="_blank" class="btn btn-sm btn-outline-dark"><i class="fa-brands fa-x-twitter"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="bg-white p-4 rounded-4 shadow-sm border">
+          <h5 class="fw-bold mb-3">Recent Stories</h5>
+          <ul class="list-unstyled mb-0">
+            {% for recent in recent_blogs %}
+            <li class="mb-3 pb-3 border-bottom">
+              <span class="badge bg-light text-secondary border small mb-1">{{ recent.get_category_display }}</span>
+              <h6 class="fw-semibold mb-0">
+                <a href="{% url 'blog_detail' recent.slug %}" class="text-dark hover-gold text-decoration-none">{{ recent.title }}</a>
+              </h6>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

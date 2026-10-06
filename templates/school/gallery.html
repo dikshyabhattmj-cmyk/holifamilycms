@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Photo Gallery | Holi Family Secondary School{% endblock %}
+
+{% block content %}
+<!-- Header Banner -->
+<div class="py-5" style="background: radial-gradient(circle at 75% 20%, #1e3a8a 0%, #0f2b59 55%, #07162c 100%); color: #fff;">
+  <div class="container text-center py-4">
+    <span class="badge bg-warning text-dark text-uppercase px-3 py-2 fw-bold mb-2 shadow-xs">
+      <i class="fa-solid fa-camera-retro me-1"></i> Moments & Memories
+    </span>
+    <h1 class="display-4 fw-bold text-white mb-2">Campus Photo Gallery</h1>
+    <p class="lead text-white-50 mx-auto" style="max-width: 620px;">Glimpses into student life, sports meets, scientific exhibitions, and cultural milestones.</p>
+  </div>
+</div>
+
+<section class="section-padding" style="background-color: var(--hf-bg-light);">
+  <div class="container">
+    <div class="row g-4">
+      {% for album in albums %}
+      <div class="col-lg-4 col-md-6">
+        <div class="hf-card h-100 d-flex flex-column border-0 shadow-sm rounded-4 overflow-hidden gallery-album-card">
+          <!-- Album Thumbnail Wrap with Hover Zoom -->
+          <div class="album-thumb-box position-relative overflow-hidden" style="height: 230px; background: linear-gradient(135deg, #0f2b59 0%, #1a56db 100%);">
+            {% if album.cover_image %}
+              <img src="{{ album.cover_image.url }}" alt="{{ album.title }}" class="album-thumb-img w-100 h-100 object-fit-cover" loading="lazy">
+            {% elif album.photos.first and album.photos.first.image %}
+              <img src="{{ album.photos.first.image.url }}" alt="{{ album.title }}" class="album-thumb-img w-100 h-100 object-fit-cover" loading="lazy">
+            {% else %}
+              <div class="w-100 h-100 d-flex flex-column align-items-center justify-content-center text-white text-center p-3" style="background: linear-gradient(135deg, #07162c 0%, #1e3a8a 100%);">
+                <div class="rounded-circle d-flex align-items-center justify-content-center mb-2" style="width: 60px; height: 60px; background: rgba(229, 169, 59, 0.2); color: #facc15; border: 1px solid rgba(229, 169, 59, 0.4);">
+                  <i class="fa-solid fa-images fs-3"></i>
+                </div>
+                <small class="text-white-50 fw-semibold">Campus Album</small>
+              </div>
+            {% endif %}
+
+            <!-- Floating Overlay Badges -->
+            <div class="position-absolute top-0 start-0 m-3">
+              <span class="badge bg-dark bg-opacity-75 backdrop-blur text-white px-3 py-2 rounded-pill shadow-sm small">
+                <i class="fa-solid fa-image me-1 text-warning"></i> {{ album.photos.count }} Photos
+              </span>
+            </div>
+
+            {% if album.event_date %}
+            <div class="position-absolute top-0 end-0 m-3">
+              <span class="badge bg-primary text-white px-3 py-2 rounded-pill shadow-sm small">
+                <i class="fa-regular fa-calendar me-1"></i> {{ album.event_date|date:"M Y" }}
+              </span>
+            </div>
+            {% endif %}
+          </div>
+
+          <!-- Album Meta & Body -->
+          <div class="p-4 d-flex flex-column flex-grow-1 bg-white">
+            <h5 class="fw-bold text-dark mb-2 line-clamp-2">
+              <a href="{% url 'album_detail' album.slug %}" class="text-dark hover-gold text-decoration-none">
+                {{ album.title }}
+              </a>
+            </h5>
+            
+            <p class="small text-muted flex-grow-1 mb-4 leading-relaxed">
+              {{ album.description|default:"Explore memorable highlights and student activities captured at Holy Family campus."|truncatewords:16 }}
+            </p>
+
+            <a href="{% url 'album_detail' album.slug %}" class="btn btn-hf-primary btn-sm py-2 rounded-3 w-100 d-flex align-items-center justify-content-center gap-2 fw-semibold">
+              <span>View Full Album</span>
+              <i class="fa-solid fa-arrow-right fa-xs"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-12 text-center text-muted py-5">
+        <div class="p-5 bg-white rounded-4 border shadow-sm max-w-md mx-auto" style="max-width: 500px;">
+          <i class="fa-solid fa-camera text-muted fs-1 mb-3"></i>
+          <h5 class="fw-bold text-dark">No Photo Albums Found</h5>
+          <p class="small text-muted mb-0">Campus photo archives are being updated. Check back soon for event memories!</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

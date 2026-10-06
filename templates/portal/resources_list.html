@@ -1,0 +1,81 @@
+{% extends 'portal/base_admin.html' %}
+
+{% block page_title %}Academic Downloads & Files{% endblock %}
+
+{% block admin_content %}
+<div class="row g-4">
+  <div class="col-lg-4">
+    <div class="bg-white p-4 rounded-4 border shadow-sm">
+      <h5 class="fw-bold text-dark mb-3">Upload Academic Document</h5>
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label class="form-label fw-bold small">Title</label>
+          {{ form.title }}
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-bold small">Resource Category</label>
+          {{ form.resource_type }}
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-bold small">Target Grade Level</label>
+          {{ form.grade_level }}
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-bold small">Upload File (PDF)</label>
+          {{ form.file }}
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-bold small">Description / Notes</label>
+          {{ form.description }}
+        </div>
+        <div class="form-check form-switch mb-3">
+          {{ form.is_active }}
+          <label class="form-check-label fw-semibold">Active for Download</label>
+        </div>
+        <button type="submit" class="btn btn-primary w-100 fw-bold">Upload Document</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="col-lg-8">
+    <div class="bg-white p-4 rounded-4 border shadow-sm">
+      <h5 class="fw-bold text-dark mb-3">Active Downloadable Files</h5>
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>Title</th>
+              <th>Type</th>
+              <th>Grade</th>
+              <th class="text-end">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for res in resources %}
+            <tr>
+              <td>
+                <h6 class="fw-bold mb-0">{{ res.title }}</h6>
+                <small class="text-muted">{{ res.uploaded_at|date:"M d, Y" }}</small>
+              </td>
+              <td><span class="badge bg-light text-primary border">{{ res.get_resource_type_display }}</span></td>
+              <td><span class="badge bg-secondary-subtle text-secondary">{{ res.grade_level }}</span></td>
+              <td class="text-end">
+                <div class="table-actions">
+                  <a href="{{ res.file.url }}" target="_blank" class="btn-action-view" title="Download Document"><i class="fa-solid fa-download"></i></a>
+                  <a href="{% url 'portal:delete_resource' res.pk %}" class="btn-action-delete" title="Delete Document" onclick="return confirm('Delete file?');"><i class="fa-solid fa-trash"></i></a>
+                </div>
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="4" class="text-center py-4 text-muted">No files uploaded yet.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

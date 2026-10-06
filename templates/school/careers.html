@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Career Vacancies | Holi Family Secondary School{% endblock %}
+
+{% block content %}
+<div class="py-5" style="background: linear-gradient(135deg, #07162c, #0f2b59); color: #fff;">
+  <div class="container text-center py-4">
+    <span class="badge bg-warning text-dark text-uppercase px-3 py-2 fw-bold mb-2">Work With Us</span>
+    <h1 class="display-4 fw-bold text-white mb-2">Career Opportunities at Holi Family</h1>
+    <p class="lead text-white-50 mx-auto" style="max-width: 600px;">Join an inspiring community of educators, mentors, and innovators.</p>
+  </div>
+</div>
+
+<section class="section-padding bg-light">
+  <div class="container">
+    <div class="row g-4">
+      {% for vacancy in vacancies %}
+      <div class="col-lg-6">
+        <div class="bg-white p-4 p-md-5 rounded-4 shadow-sm border h-100 d-flex flex-column">
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <span class="badge bg-primary px-3 py-2">{{ vacancy.get_job_type_display }}</span>
+            <small class="text-danger fw-bold"><i class="fa-regular fa-clock me-1"></i> Deadline: {{ vacancy.deadline|date:"M d, Y" }}</small>
+          </div>
+          <h3 class="fw-bold text-dark mb-1">{{ vacancy.title }}</h3>
+          <p class="text-primary small fw-semibold mb-3">Department: {{ vacancy.department }} &bull; Openings: {{ vacancy.open_positions }}</p>
+          
+          <div class="small text-secondary mb-4 flex-grow-1">
+            <p><strong>Qualification:</strong> {{ vacancy.min_qualification }}</p>
+            <p><strong>Experience:</strong> {{ vacancy.experience_required }}</p>
+            <p class="text-muted">{{ vacancy.description }}</p>
+          </div>
+
+          <div class="pt-3 border-top">
+            <a href="{% url 'career_apply' vacancy.id %}" class="btn btn-hf-gold w-100 fw-bold">
+              <i class="fa-solid fa-file-signature me-1"></i> Apply for this Position
+            </a>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-12 text-center text-muted py-5">
+        <div class="bg-white p-5 rounded-4 border shadow-sm max-w-500 mx-auto">
+          <i class="fa-solid fa-briefcase fs-1 text-muted mb-3"></i>
+          <h5>No Active Vacancies Currently</h5>
+          <p class="small text-muted mb-0">We regularly review talent resumes. You can reach out directly via our contact desk.</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

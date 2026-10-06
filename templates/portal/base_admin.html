@@ -1,0 +1,127 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}School Admin Portal | Holi Family Secondary School{% endblock %}</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+</head>
+<body class="admin-body">
+
+  <div class="admin-wrapper">
+    <!-- Sidebar Navigation -->
+    <aside class="admin-sidebar">
+      <div class="sidebar-brand">
+        <i class="fa-solid fa-graduation-cap text-warning fs-3"></i>
+        <div>
+          <h6 class="fw-bold mb-0 text-white">HOLI FAMILY</h6>
+          <small class="text-white-50" style="font-size: 0.7rem;">Admin CMS</small>
+        </div>
+      </div>
+
+      <ul class="nav flex-column py-3">
+        <li class="nav-item">
+          <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" href="{% url 'portal:dashboard' %}">
+            <i class="fa-solid fa-gauge-high"></i> Dashboard
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if 'admissions' in request.path %}active{% endif %}" href="{% url 'portal:manage_admissions' %}">
+            <i class="fa-solid fa-user-graduate"></i> Admissions
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if 'notices' in request.path %}active{% endif %}" href="{% url 'portal:manage_notices' %}">
+            <i class="fa-solid fa-bullhorn"></i> Notice Board
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if 'blogs' in request.path %}active{% endif %}" href="{% url 'portal:manage_blogs' %}">
+            <i class="fa-solid fa-newspaper"></i> News & Blogs
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if 'teachers' in request.path %}active{% endif %}" href="{% url 'portal:manage_teachers' %}">
+            <i class="fa-solid fa-users"></i> Faculty & Staff
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if 'messages' in request.path %}active{% endif %}" href="{% url 'portal:manage_messages' %}">
+            <i class="fa-solid fa-envelope"></i> Contact Inquiries
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if 'resources' in request.path %}active{% endif %}" href="{% url 'portal:manage_resources' %}">
+            <i class="fa-solid fa-file-arrow-down"></i> Academic Files
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if 'push' in request.path %}active{% endif %}" href="{% url 'portal:push_manager' %}">
+            <i class="fa-solid fa-tower-broadcast text-warning"></i> Push Broadcasts
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if 'settings' in request.path %}active{% endif %}" href="{% url 'portal:school_settings' %}">
+            <i class="fa-solid fa-sliders"></i> Site Settings
+          </a>
+        </li>
+        <li class="nav-item mt-4 pt-3 border-top border-secondary border-opacity-25">
+          <a class="nav-link text-info" href="{% url 'home' %}" target="_blank">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> Visit Public Site
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-danger" href="{% url 'portal:logout' %}">
+            <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+          </a>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Main Admin Content Area -->
+    <div class="admin-main">
+      <header class="admin-topbar">
+        <div class="d-flex align-items-center gap-3 min-w-0">
+          <h5 class="mb-0 fw-bold text-dark text-truncate">{% block page_title %}Dashboard Overview{% endblock %}</h5>
+        </div>
+        <div class="d-flex align-items-center gap-2 text-nowrap flex-shrink-0 ms-3">
+          <button type="button" data-push-toggle class="btn btn-outline-primary btn-sm rounded-pill px-3 py-1 text-nowrap d-inline-flex align-items-center gap-1 shadow-2xs">
+            <i class="fa-solid fa-bell text-warning"></i> <span>Live Alerts</span>
+          </button>
+          <span class="badge bg-primary-subtle text-primary px-3 py-2 fw-semibold d-inline-flex align-items-center gap-1 text-nowrap">
+            <i class="fa-solid fa-shield-halved"></i> <span>{{ user.username }} ({{ user.is_superuser|yesno:"Superadmin,Editor" }})</span>
+          </span>
+          <a href="{% url 'portal:logout' %}" class="btn btn-outline-danger btn-sm rounded-3 d-inline-flex align-items-center justify-content-center" style="width: 34px; height: 34px;" title="Sign Out">
+            <i class="fa-solid fa-power-off"></i>
+          </a>
+        </div>
+      </header>
+
+      <div class="admin-content">
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show shadow-sm border-0 mb-4" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+          {% endfor %}
+        {% endif %}
+
+        {% block admin_content %}{% endblock %}
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="{% static 'js/pwa.js' %}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

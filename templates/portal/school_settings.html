@@ -1,0 +1,199 @@
+{% extends 'portal/base_admin.html' %}
+
+{% block page_title %}School Profile & Global Configuration{% endblock %}
+
+{% block admin_content %}
+<div class="bg-white p-4 p-md-5 rounded-4 border shadow-sm">
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <h5 class="fw-bold text-primary mb-3">1. School Identity & Affiliation</h5>
+    <div class="row g-3 mb-4">
+      <div class="col-md-6">
+        <label class="form-label fw-bold small">School Full Name</label>
+        {{ form.name }}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-bold small">Tagline</label>
+        {{ form.tagline }}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-bold small">Established Year</label>
+        {{ form.established_year }}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-bold small">Board Affiliation</label>
+        {{ form.affiliation }}
+      </div>
+    </div>
+
+    <h5 class="fw-bold text-primary mb-3 pt-3 border-top">2. Urgent Announcement Bar</h5>
+    <div class="row g-3 mb-4">
+      <div class="col-12">
+        <div class="form-check form-switch">
+          {{ form.urgent_announcement_enabled }}
+          <label class="form-check-label fw-semibold">Enable Top Urgent Notification Bar</label>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <label class="form-label fw-bold small">Banner Notification Text</label>
+        {{ form.urgent_announcement_text }}
+      </div>
+      <div class="col-md-4">
+        <label class="form-label fw-bold small">Action Link URL</label>
+        {{ form.urgent_announcement_link }}
+      </div>
+    </div>
+
+    <h5 class="fw-bold text-primary mb-3 pt-3 border-top">3. Principal's Desk Settings</h5>
+    <div class="row g-3 mb-4">
+      <div class="col-md-6">
+        <label class="form-label fw-bold small">Principal Name</label>
+        {{ form.principal_name }}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-bold small">Principal Designation</label>
+        {{ form.principal_designation }}
+      </div>
+      <div class="col-12">
+        <label class="form-label fw-bold small">Principal's Public Message</label>
+        {{ form.principal_message }}
+      </div>
+      <div class="col-md-12">
+        <label class="form-label fw-bold small">Principal Photo</label>
+        {% if profile.principal_photo %}
+          <div class="mb-2 d-flex align-items-center gap-3">
+            <img src="{{ profile.principal_photo.url }}" alt="Principal" class="rounded-circle border" style="width: 60px; height: 60px; object-fit: cover;">
+            <span class="small text-muted">Current photo active. Choose a new file to replace it.</span>
+          </div>
+        {% endif %}
+        {{ form.principal_photo }}
+      </div>
+    </div>
+
+    <h5 class="fw-bold text-primary mb-3 pt-3 border-top">4. Contact & Location Information</h5>
+    <div class="row g-3 mb-4">
+      <div class="col-md-6">
+        <label class="form-label fw-bold small">Primary Phone</label>
+        {{ form.phone_primary }}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-bold small">Secondary Phone</label>
+        {{ form.phone_secondary }}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-bold small">Primary Email</label>
+        {{ form.email_primary }}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-bold small">Admissions Email</label>
+        {{ form.email_admissions }}
+      </div>
+      <div class="col-md-8">
+        <label class="form-label fw-bold small">Street Address</label>
+        {{ form.address }}
+      </div>
+      <div class="col-md-4">
+        <label class="form-label fw-bold small">Office Hours</label>
+        {{ form.office_hours }}
+      </div>
+    </div>
+
+    <h5 class="fw-bold text-primary mb-3 pt-3 border-top">5. Social Media Presence</h5>
+    <div class="row g-3 mb-4">
+      <div class="col-md-3">
+        <label class="form-label fw-bold small">Facebook URL</label>
+        {{ form.facebook_url }}
+      </div>
+      <div class="col-md-3">
+        <label class="form-label fw-bold small">Twitter / X URL</label>
+        {{ form.twitter_url }}
+      </div>
+      <div class="col-md-3">
+        <label class="form-label fw-bold small">Instagram URL</label>
+        {{ form.instagram_url }}
+      </div>
+      <div class="col-md-3">
+        <label class="form-label fw-bold small">YouTube URL</label>
+        {{ form.youtube_url }}
+      </div>
+    </div>
+
+    <h5 class="fw-bold text-primary mb-3 pt-3 border-top">6. Homepage Hero & Banner Showcase</h5>
+    <div class="row g-3 mb-4">
+      <div class="col-md-12">
+        <label class="form-label fw-bold small">Hero Main Headline Title</label>
+        {{ form.hero_title }}
+      </div>
+      <div class="col-md-12">
+        <label class="form-label fw-bold small">Hero Subtitle (Animated Typing Text)</label>
+        {{ form.hero_subtitle }}
+      </div>
+      <div class="col-md-12">
+        <label class="form-label fw-bold small">Homepage Short Intro Description</label>
+        {{ form.short_intro }}
+      </div>
+      <div class="col-md-12">
+        <label class="form-label fw-bold small">Hero Showcase Image / Banner</label>
+        {% if profile.hero_banner_image %}
+          <div class="mb-2 d-flex align-items-center gap-3">
+            <img src="{{ profile.hero_banner_image.url }}" alt="Hero Banner" class="rounded border" style="width: 120px; height: 68px; object-fit: cover;">
+            <span class="small text-muted">Current hero showcase image. Choose a new file to replace it.</span>
+          </div>
+        {% endif %}
+        {{ form.hero_banner_image }}
+      </div>
+    </div>
+
+    <h5 class="fw-bold text-primary mb-3 pt-3 border-top">7. Public Key Statistics</h5>
+    <div class="row g-3 mb-4">
+      <div class="col-md-3">
+        <label class="form-label fw-bold small">Students Count (e.g. 2,500+)</label>
+        {{ form.stat_students_count }}
+      </div>
+      <div class="col-md-3">
+        <label class="form-label fw-bold small">Pass Rate (e.g. 100%)</label>
+        {{ form.stat_pass_rate }}
+      </div>
+      <div class="col-md-3">
+        <label class="form-label fw-bold small">Mentors / Faculty (e.g. 120+)</label>
+        {{ form.stat_teachers_count }}
+      </div>
+      <div class="col-md-3">
+        <label class="form-label fw-bold small">National Awards (e.g. 48+)</label>
+        {{ form.stat_awards_count }}
+      </div>
+    </div>
+
+    <h5 class="fw-bold text-primary mb-3 pt-3 border-top">8. Vision, Mission & Institutional Values</h5>
+    <div class="row g-3 mb-4">
+      <div class="col-md-6">
+        <label class="form-label fw-bold small">Our Vision</label>
+        {{ form.vision }}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-bold small">Our Mission</label>
+        {{ form.mission }}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-bold small">Core Values</label>
+        {{ form.core_values }}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-bold small">Institutional Objectives</label>
+        {{ form.objectives }}
+      </div>
+      <div class="col-md-12">
+        <label class="form-label fw-bold small">Our History & Legacy</label>
+        {{ form.history }}
+      </div>
+    </div>
+
+    <div class="text-end pt-3 border-top">
+      <button type="submit" class="btn btn-primary btn-lg px-5 fw-bold">
+        <i class="fa-solid fa-floppy-disk me-2"></i> Save All Settings
+      </button>
+    </div>
+  </form>
+</div>
+{% endblock %}
